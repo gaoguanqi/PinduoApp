@@ -6,7 +6,7 @@ import android.net.Uri
 import cn.vove7.andro_accessibility_api.api.withText
 import com.pinduo.auto.app.MyApplication
 
-class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbility>() {
+class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbility>(){
 
     companion object {
         val INSTANCE: CommonAccessbility by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -23,8 +23,10 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("snssdk1128://feed?refer=web"))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         MyApplication.instance.startActivity(intent)
-        withText("推荐")?.globalClick()
+        try {
+            withText("推荐")?.await(3000L)?.globalClick()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
-
-
 }

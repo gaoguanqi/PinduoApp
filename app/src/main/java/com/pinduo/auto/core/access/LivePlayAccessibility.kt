@@ -64,7 +64,6 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
 
     // 发评论
-
     fun doSpeak(content: String){
         isSuccess = false
         try {
@@ -98,48 +97,6 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             }
         }
     }
-
-//    fun doSpeak(content: String) {
-//        withText("说点什么...")?.globalClick()?.let {
-//            // 3秒之内 成功查找到节点
-//            if (it) { //成功点击了该节点
-//                withId(DouyinIds.getb9q())?.childAt(0)
-//                    ?.trySetText(content)?.let { it1 ->
-//                    //3秒之内 成功查找到该节点的第0个子节点尝试设置评论内容
-//                    if (it1) {
-//                        // 设置评论内容成功
-//                        withId(DouyinIds.getfvs())?.await(3000L)?.globalClick()?.let { it2 ->
-//                            //1秒内 成功查找到该节点
-//                            if (it2) {
-//                                //成功点击了该节点
-//                                MyApplication.instance.getUiHandler().sendMessage("评论成功:${content}")
-//                                getSocketClient()?.sendSuccess()
-//                            }else{
-//                                MyApplication.instance.getUiHandler().sendMessage("未点击发送")
-//                                LogUtils.logGGQ("未点击<<发送>>1")
-//                            }
-//                        }?:let {
-//                            LogUtils.logGGQ("未点击<<发送>>2")
-//                        }
-//                    }
-//                } ?: let {
-//                    MyApplication.instance.getUiHandler().sendMessage("评论失败2->${content}")
-//                    getSocketClient()?.sendError()
-//                }
-//            } else {
-//                //点击该节点失败
-//                MyApplication.instance.getUiHandler().sendMessage("评论失败3->${content}")
-//                getSocketClient()?.sendError()
-//            }
-//        } ?: let {
-//            // 3秒之内未找到该节点
-//            MyApplication.instance.getUiHandler().sendMessage("评论失败4->${content}")
-//            getSocketClient()?.sendError()
-//        }
-//    }
-
-
-
 
 
     private fun startLiveRoom(zhiboNum: String) {
@@ -186,8 +143,6 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                 }
             }
         }
-
-
     }
 
 
@@ -208,6 +163,9 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                 MyApplication.instance.getUiHandler().sendMessage("${count}-->>>${index}次-->${clickCount}次成功")
                 WaitUtil.sleep(500L)
             }
+        }catch (e:Exception){
+            e.printStackTrace()
+            MyApplication.instance.getUiHandler().sendMessage("点赞异常！！！")
         }finally {
             if(clickCount >= count){
                 getSocketClient()?.sendSuccess()
@@ -219,7 +177,6 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
 
     //---------------购物车-----
-
     fun doShopCart() {
         isSuccess = false
         try {
@@ -255,6 +212,9 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                     }
                 }
             }
+        }catch (e:Exception){
+            e.printStackTrace()
+            MyApplication.instance.getUiHandler().sendMessage("购物车异常！！！")
         }finally {
             if(isSuccess){
                 getSocketClient()?.sendSuccess()

@@ -10,6 +10,7 @@ import com.pinduo.auto.base.BaseActivity
 import com.pinduo.auto.utils.AccessibilityServiceUtils
 import com.pinduo.auto.utils.LogUtils
 import com.yhao.floatwindow.FloatWindow
+import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity() {
 
@@ -18,6 +19,20 @@ class HomeActivity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_home
 
     override fun initData(savedInstanceState: Bundle?) {
+
+        sw_float_window.isChecked = true
+        sw_float_window.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                FloatWindow.get()?.let {
+                    if (!it.isShowing) it.show()
+                }
+            } else {
+                FloatWindow.get()?.let {
+                    if (it.isShowing) it.hide()
+                }
+            }
+        }
+
         checkAccessibilityPermission()
     }
 
