@@ -189,17 +189,17 @@ class MyAccessibilityService :AccessibilityApi(){
                         }
 
                         Constants.Task.task4 -> {
-//                            MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = task,content = entity.fayan))){
-//                                //回调
-//                            }
-
-                            MyApplication.instance.getJobManager().run {
-                                haList.forEach {
-                                    this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = it))){
-
-                                    }
-                                }
+                            MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = task,content = entity.fayan))){
+                                //回调
                             }
+
+//                            MyApplication.instance.getJobManager().run {
+//                                haList.forEach {
+//                                    this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = it))){
+//
+//                                    }
+//                                }
+//                            }
                         }
 
                         Constants.Task.task6 ->{
