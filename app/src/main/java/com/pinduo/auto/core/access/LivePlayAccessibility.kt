@@ -101,7 +101,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
     private fun startLiveRoom(zhiboNum: String) {
         setLiveURI(zhiboNum)
-        ObserverManager.instance.add(this)
+        ObserverManager.instance.add(Constants.Task.task3,this)
         if (!isInLiveRoom() && !TextUtils.isEmpty(getLiveURI())) {
             setInLiveRoom(true)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getLiveURI()))
@@ -154,6 +154,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
     private val period = 500
     private var clickCount = 0
     fun doGiveLike(s:Long){
+        clickCount = 0
         val count = (s / period)
         try {
             for (index in 1..count){

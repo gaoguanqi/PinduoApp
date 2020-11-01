@@ -14,6 +14,9 @@
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- android 9.0之后使用前台服务，需要添加权限 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!--手机必须支持USB主机特性(OTG)-->
+    <uses-feature android:name="android.hardware.usb.host" />
+
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"

@@ -5,7 +5,7 @@ class MyScheduledExecutor private constructor(): Runnable {
 
     private var tick:Long = 0L
     private var totalTime:Long = 0L
-    private var isRing:Boolean = false
+    private var isRuning:Boolean = false
     private var name:String = ""
     private var job:String = ""
     private var tickListener: TimerTickListener? = null
@@ -21,8 +21,8 @@ class MyScheduledExecutor private constructor(): Runnable {
     }
 
 
-    fun isRing():Boolean{
-        return isRing
+    fun isRuning():Boolean{
+        return isRuning
     }
 
     fun onReStart(name:String,job:String,total:Long){
@@ -31,18 +31,18 @@ class MyScheduledExecutor private constructor(): Runnable {
         this.name = name
         this.job = job
         this.totalTime = total
-        this.isRing = true
+        this.isRuning = true
         this.tickListener?.onStart(name,job)
     }
 
     fun onStop(){
-        this.isRing = false
+        this.isRuning = false
         this.tickListener?.onStop(name,job)
     }
 
     override fun run() {
         this.tick++
-        if(isRing()){
+        if(isRuning()){
             if(tick < totalTime){
                 val t:Long = tick % 10
                 if(t == 0L){

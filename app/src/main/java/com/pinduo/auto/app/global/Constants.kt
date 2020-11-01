@@ -34,6 +34,7 @@ class Constants {
         const val douyin = "1"
         const val kuaishou = "2"
 
+        const val task0 = "0"
         const val task1 = "1"
         const val task2 = "2"
         const val task3 = "3"

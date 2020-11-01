@@ -34,6 +34,7 @@ class HomeActivity : BaseActivity() {
         }
 
         checkAccessibilityPermission()
+
     }
 
     private fun checkAccessibilityPermission() {

@@ -1,9 +1,10 @@
 package com.pinduo.auto.utils
 
-import android.content.Context.INPUT_METHOD_SERVICE
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Context.KEYGUARD_SERVICE
+import android.os.PowerManager
 import android.text.TextUtils
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import com.blankj.utilcode.util.AppUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -26,6 +27,21 @@ class TaskUtils{
 
         fun isDouyin1270():Boolean{
             return TextUtils.equals("12.7.0",AppUtils.getAppVersionName(Constants.GlobalValue.PACKAGE_DOUYIN))
+        }
+
+
+        @SuppressLint("InvalidWakeLockTag")
+        fun wakeUpAndUnlock(){
+            // 获取电源管理器对象
+            val pm:PowerManager? = MyApplication.instance.getSystemService(Context.POWER_SERVICE) as PowerManager
+            pm?.let {
+                if(!it.isInteractive){
+                    val wl: PowerManager.WakeLock = it.newWakeLock((PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.SCREEN_BRIGHT_WAKE_LOCK),"bright")
+                    wl.acquire(10*60*1000L /*10 minutes*/)
+                    wl.release()
+                    MyApplication.instance.getUiHandler().sendMessage("屏幕点亮")
+                }
+            }
         }
     }
 }

@@ -13,7 +13,9 @@ import com.blankj.utilcode.util.Utils
 import com.pinduo.auto.R
 import com.pinduo.auto.app.manager.AppLifeCycleCallBack
 import com.pinduo.auto.app.manager.ForebackLifeObserver
+import com.pinduo.auto.core.access.LivePlayAccessibility
 import com.pinduo.auto.extensions.layoutInflater
+import com.pinduo.auto.receiver.USBBroadcastReceiver
 import com.pinduo.auto.service.MyAccessibilityService
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.UiHandler
@@ -23,6 +25,10 @@ class MyApplication : Application() {
 
     private lateinit var uiHandler: UiHandler
     private lateinit var jobManager: JobManager
+
+    private val usbBroadcastReceiver: USBBroadcastReceiver by lazy {
+        USBBroadcastReceiver()
+    }
 
 
     companion object {
@@ -62,6 +68,8 @@ class MyApplication : Application() {
             GESTURE_SERVICE_CLS = MyAccessibilityService::class.java // 高级无障碍
         }
         initFloatWindow()
+
+        USBBroadcastReceiver.registerReceiver(this,usbBroadcastReceiver)
     }
 
 
@@ -132,6 +140,7 @@ class MyApplication : Application() {
 
     override fun onTerminate() {
         super.onTerminate()
+        USBBroadcastReceiver.unregisterReceiver(this,usbBroadcastReceiver)
         LogUtils.logGGQ("app onTerminate")
         FloatWindow.destroy()
     }

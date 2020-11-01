@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import cn.vove7.andro_accessibility_api.api.withText
 import com.pinduo.auto.app.MyApplication
+import com.pinduo.auto.app.global.Constants
+import com.pinduo.auto.widget.observers.ObserverManager
 
 class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbility>(){
 
@@ -27,6 +29,13 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
             withText("推荐")?.await(3000L)?.globalClick()
         }catch (e:Exception){
             e.printStackTrace()
+        }
+    }
+
+
+    fun ignorePage(className:String) {
+        when(className){
+
         }
     }
 }
