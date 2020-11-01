@@ -1,11 +1,13 @@
 package com.pinduo.auto.im
 
 import android.text.TextUtils
+import com.blankj.utilcode.util.FileIOUtils
 import com.google.gson.Gson
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.utils.IMEIUtils
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.app.config.Config
+import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.http.entity.TaskEntity
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -47,14 +49,16 @@ class SocketClient private constructor(){
                 socket?.let {
                     if(it.connected()){
                         uiHandler.sendMessage("已连接："+ it.id())
-                        val imei:String = IMEIUtils.getIMEI()
+                        var imei:String = IMEIUtils.getIMEI()
                         if(TextUtils.isEmpty(imei)){
                             uiHandler.sendMessage("imei empty")
-                        }else{
-                            uiHandler.sendMessage(imei)
-                            sendMessage("login",imei)
-                            LogUtils.logGGQ("imei:${imei}")
+                            imei = FileIOUtils.readFile2String(Constants.Path.IMEI_PATH)
+                            IMEIUtils.setIMEI(imei)
                         }
+
+                        uiHandler.sendMessage(imei)
+                        sendMessage("login",imei)
+                        LogUtils.logGGQ("imei:${imei}")
                     }
                 }
             }

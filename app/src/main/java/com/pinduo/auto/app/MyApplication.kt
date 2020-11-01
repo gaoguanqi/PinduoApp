@@ -142,7 +142,6 @@ class MyApplication : Application() {
         super.onTerminate()
         USBBroadcastReceiver.unregisterReceiver(this,usbBroadcastReceiver)
         LogUtils.logGGQ("app onTerminate")
-        FloatWindow.destroy()
     }
 
 }

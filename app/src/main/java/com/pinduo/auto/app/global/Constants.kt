@@ -35,6 +35,9 @@ class Constants {
         const val kuaishou = "2"
 
         const val task0 = "0"
+
+
+
         const val task1 = "1"
         const val task2 = "2"
         const val task3 = "3"
@@ -49,22 +52,22 @@ class Constants {
 
 
     object Douyin {
-
+        //抖音首页
         const val PAGE_MAIN = "com.ss.android.ugc.aweme.main.MainActivity"
+        //抖音直播页
         const val PAGE_LIVE_ROOM = "com.ss.android.ugc.aweme.live.LivePlayActivity"
-
         //主播头像弹出框
         const val PAGE_LIVE_ANCHOR = "com.bytedance.android.livesdk.widget.LiveBottomSheetDialog"
-
-        //
+        //直播页忽略页面
         const val PAGE_LIVE_GIFT = "com.bytedance.android.livesdk.gift.c.a"
         const val PAGE_LIVE_Follow = "com.bytedance.android.livesdk.chatroom.viewmodule.FollowGuideWidget${'$'}a"
         const val PAGE_LIVE_MORE = "com.bytedance.android.livesdk.chatroom.viewmodule.toolbar.LiveToolbarMoreDialog"
-
         //直播间购物车
         const val PAGE_LIVE_CART = "com.bytedance.android.livesdk.livecommerce.dialog.ECBottomDialog"
+        //抖音版本更新
+        const val PAGE_UPDATE_X = "com.ss.android.ugc.aweme.update.x"
+        const val PAGE_UPDATE_Y = "com.ss.android.ugc.aweme.update.y"
+        //
 
-        //评论
-        const val PAGE_LIVE_INPUT = "android.app.Dialog"
     }
 }

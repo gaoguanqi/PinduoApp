@@ -35,7 +35,19 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
 
     fun ignorePage(className:String) {
         when(className){
+            Constants.Douyin.PAGE_UPDATE_X,Constants.Douyin.PAGE_UPDATE_Y ->{
+                tryWithText("以后再说")
+            }
 
+
+        }
+    }
+
+    private fun tryWithText(s:String){
+        try {
+            withText(s)?.globalClick()
+        }catch (e:Exception) {
+            e.printStackTrace()
         }
     }
 }

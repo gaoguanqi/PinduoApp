@@ -44,14 +44,7 @@ class MyAccessibilityService :AccessibilityApi(){
 
     override val enableListenAppScope: Boolean = true
 
-    private val haList = mutableListOf<String>()
 
-    init {
-        val s:String = "欢迎来到抖音直播间请大家注意财产安全谨防网络诈骗"
-        s.toCharArray().asList().forEach {
-            haList.add(it.toString())
-        }
-    }
 
     override fun onPageUpdate(currentScope: AppScope) {
         super.onPageUpdate(currentScope)
@@ -273,7 +266,6 @@ class MyAccessibilityService :AccessibilityApi(){
 
     override fun onInterrupt() {
         super.onInterrupt()
-        FloatWindow.destroy()
     }
 
     override fun onDestroy() {
