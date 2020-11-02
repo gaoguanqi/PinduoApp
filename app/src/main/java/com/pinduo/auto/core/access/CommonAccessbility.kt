@@ -6,6 +6,7 @@ import android.net.Uri
 import cn.vove7.andro_accessibility_api.api.withText
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
+import com.pinduo.auto.utils.NodeUtils
 import com.pinduo.auto.widget.observers.ObserverManager
 
 class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbility>(){
@@ -25,29 +26,17 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("snssdk1128://feed?refer=web"))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         MyApplication.instance.startActivity(intent)
-        try {
-            withText("推荐")?.await(3000L)?.globalClick()
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
+        NodeUtils.tryWithText("推荐",3000L)
     }
 
 
     fun ignorePage(className:String) {
         when(className){
             Constants.Douyin.PAGE_UPDATE_X,Constants.Douyin.PAGE_UPDATE_Y ->{
-                tryWithText("以后再说")
+                NodeUtils.tryWithText("以后再说")
             }
-
-
         }
     }
 
-    private fun tryWithText(s:String){
-        try {
-            withText(s)?.globalClick()
-        }catch (e:Exception) {
-            e.printStackTrace()
-        }
-    }
+
 }

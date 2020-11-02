@@ -1,8 +1,8 @@
 package com.pinduo.auto.service
 
 import android.content.Context
-import android.os.PowerManager
 import android.text.TextUtils
+import android.view.View
 import android.view.accessibility.AccessibilityManager
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.AppScope
@@ -10,6 +10,7 @@ import com.birbit.android.jobqueue.CancelResult
 import com.birbit.android.jobqueue.Job
 import com.birbit.android.jobqueue.TagConstraint
 import com.birbit.android.jobqueue.callback.JobManagerCallback
+import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.core.access.CommonAccessbility
@@ -17,6 +18,7 @@ import com.pinduo.auto.core.access.LivePlayAccessibility
 import com.pinduo.auto.core.data.TaskData
 import com.pinduo.auto.core.job.BaseJob
 import com.pinduo.auto.core.job.LiveTaskJob
+import com.pinduo.auto.extensions.layoutInflater
 import com.pinduo.auto.im.OnSocketListener
 import com.pinduo.auto.im.SocketClient
 import com.pinduo.auto.utils.LogUtils
@@ -25,7 +27,7 @@ import com.pinduo.auto.widget.timer.MyScheduledExecutor
 import com.pinduo.auto.widget.timer.TimerTickListener
 import com.pinduo.auto.http.entity.TaskEntity
 import com.pinduo.auto.utils.TaskUtils
-import com.yhao.floatwindow.FloatWindow
+import com.yhao.floatwindow.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -45,6 +47,19 @@ class MyAccessibilityService :AccessibilityApi(){
     override val enableListenAppScope: Boolean = true
 
 
+    private val floatWindow:FloatWindow.B by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED){
+        val view: View = this.baseContext.layoutInflater.inflate(R.layout.layout_float_view, null)
+        FloatWindow.with(getApplicationContext())
+            .setView(view)
+            .setWidth(Screen.width, 0.4f)                               //设置控件宽高
+            .setHeight(Screen.height, 0.2f)
+            .setX(2)                                   //设置控件初始位置
+            .setY(2)
+            .setDesktopShow(true)                        //桌面显示
+            .setMoveType(MoveType.active) //可拖动，释放后自动回到原位置
+            .setViewStateListener(MyViewStateListener())    //监听悬浮控件状态改变
+            .setPermissionListener(MyPermissionListener())
+    }
 
     override fun onPageUpdate(currentScope: AppScope) {
         super.onPageUpdate(currentScope)
@@ -72,7 +87,7 @@ class MyAccessibilityService :AccessibilityApi(){
         super.onCreate()
         //must 高级无障碍
         gestureService = this
-
+        floatWindow.build()
         CommonAccessbility.INSTANCE.initService(this)
         LivePlayAccessibility.INSTANCE.initService(this).setSocketClient(socketClient)
         MyApplication.instance.getJobManager().addCallback(object :
@@ -102,6 +117,7 @@ class MyAccessibilityService :AccessibilityApi(){
             }
         })
 
+
         (getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager).addAccessibilityStateChangeListener {
             LogUtils.logGGQ("AccessibilityManager：${it}")
             if(it){
@@ -130,7 +146,7 @@ class MyAccessibilityService :AccessibilityApi(){
                 LogUtils.logGGQ("onMark：${mark}")
                 uiHandler.clearMessage()
                 uiHandler.sendMessage("onMark：${mark}")
-                TaskUtils.wakeUpAndUnlock()
+//                TaskUtils.wakeUpAndUnlock()
 
             }
 
@@ -171,9 +187,7 @@ class MyAccessibilityService :AccessibilityApi(){
                         Constants.Task.task1 ->{
                             // 任务1 接收到数据 要回馈
                             socketClient.onReceiveStatus()
-
                         }
-
 
                         Constants.Task.task3 -> {
                             // 任务3 接收到数据 要回馈
@@ -188,6 +202,7 @@ class MyAccessibilityService :AccessibilityApi(){
                         }
 
                         Constants.Task.task4 -> {
+
                             MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = task,content = entity.fayan))){
                                 //回调
                             }
@@ -275,5 +290,55 @@ class MyAccessibilityService :AccessibilityApi(){
         //must 高级无障碍
         gestureService = null
         FloatWindow.destroy()
+    }
+
+
+
+    inner class MyViewStateListener : ViewStateListener {
+        override fun onBackToDesktop() {
+            LogUtils.logGGQ("onBackToDesktop")
+        }
+
+        override fun onMoveAnimStart() {
+            LogUtils.logGGQ("onMoveAnimStart")
+
+        }
+
+        override fun onMoveAnimEnd() {
+            LogUtils.logGGQ("onMoveAnimEnd")
+        }
+
+        override fun onPositionUpdate(x: Int, y: Int) {
+            LogUtils.logGGQ("onPositionUpdate")
+        }
+
+
+        override fun onDismiss() {
+            LogUtils.logGGQ("onDismiss")
+        }
+
+        override fun onShow() {
+            LogUtils.logGGQ("onShow")
+            FloatWindow.get()?.view?.let {
+                uiHandler.initFloater(
+                    it.findViewById(R.id.sv_container),
+                    it.findViewById(R.id.tv_msg)
+                )
+            }
+        }
+
+        override fun onHide() {
+            LogUtils.logGGQ("onHide")
+        }
+    }
+
+    inner class MyPermissionListener : PermissionListener {
+        override fun onSuccess() {
+            LogUtils.logGGQ("FloatWindow onSuccess")
+        }
+
+        override fun onFail() {
+            LogUtils.logGGQ("FloatWindow onFail")
+        }
     }
 }

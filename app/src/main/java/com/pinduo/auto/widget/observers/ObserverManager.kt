@@ -5,8 +5,8 @@ import com.pinduo.auto.app.global.Constants
 
 class ObserverManager : SubjectListener {
 
-    private val task1List = mutableListOf<ObserverListener>()
-    private val task3List = mutableListOf<ObserverListener>()
+    private val task1List = hashSetOf<ObserverListener>()
+    private val task3List = hashSetOf<ObserverListener>()
 
     companion object {
         val instance: ObserverManager by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {

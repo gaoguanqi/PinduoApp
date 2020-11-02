@@ -2,6 +2,10 @@ package com.pinduo.auto.utils
 
 import android.text.TextUtils
 import android.view.accessibility.AccessibilityNodeInfo
+import cn.vove7.andro_accessibility_api.api.click
+import cn.vove7.andro_accessibility_api.api.pressWithTime
+import cn.vove7.andro_accessibility_api.api.withText
+import com.pinduo.auto.app.MyApplication
 
 class NodeUtils {
     companion object{
@@ -37,5 +41,14 @@ class NodeUtils {
             }
         }
 
+
+         fun tryWithText(s:String,m:Long = 0L){
+            try {
+               val isClick:Boolean =  if(m > 0) withText(s)?.await(m)?.globalClick()?:false else withText(s)?.globalClick()
+                MyApplication.instance.getUiHandler().sendMessage("点击-->>>${isClick}")
+            }catch (e:Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

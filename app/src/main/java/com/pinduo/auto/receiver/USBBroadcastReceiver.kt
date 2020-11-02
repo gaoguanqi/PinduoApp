@@ -7,7 +7,9 @@ import android.content.IntentFilter
 import android.hardware.usb.UsbManager
 import android.os.BatteryManager
 import android.text.TextUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
+import com.pinduo.auto.utils.NodeUtils
 
 
 class USBBroadcastReceiver : BroadcastReceiver() {
@@ -88,7 +90,8 @@ class USBBroadcastReceiver : BroadcastReceiver() {
                     Intent.ACTION_POWER_CONNECTED -> {
                         //电源接通
                         MyApplication.instance.getUiHandler().sendMessage("电源接通")
-
+                        val x = ScreenUtils.getScreenWidth() / 2
+                        val y = ScreenUtils.getScreenHeight() - 100
                     }
 
                     Intent.ACTION_POWER_DISCONNECTED -> {
