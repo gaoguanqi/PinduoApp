@@ -3,11 +3,19 @@ package com.pinduo.auto.core.access
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.net.Uri
+import cn.vove7.andro_accessibility_api.AccessibilityApi
+import cn.vove7.andro_accessibility_api.AppScope
+import cn.vove7.andro_accessibility_api.api.waitForPage
 import cn.vove7.andro_accessibility_api.api.withText
+import cn.vove7.andro_accessibility_api.utils.whileWaitTime
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
+import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.NodeUtils
 import com.pinduo.auto.widget.observers.ObserverManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlin.math.min
 
 class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbility>(){
 
@@ -26,7 +34,15 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("snssdk1128://feed?refer=web"))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         MyApplication.instance.startActivity(intent)
-        NodeUtils.tryWithText("推荐",3000L)
+    }
+
+    fun douyin2MainWithText(s:String){
+        douyin2Main()
+        if(waitForPage(AppScope(Constants.GlobalValue.PACKAGE_DOUYIN,Constants.Douyin.PAGE_MAIN),3000L)){
+            NodeUtils.tryWithText(s)
+        }else{
+            NodeUtils.tryWithText(s,3000L)
+        }
     }
 
 
@@ -38,5 +54,16 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
         }
     }
 
+    fun waitForMainPage(listener:MainPageListener){
+        if(waitForPage(AppScope(Constants.GlobalValue.PACKAGE_DOUYIN,Constants.Douyin.PAGE_MAIN),9000L)){
+            listener.call(true)
+        }else{
+            listener.call(false)
+        }
+    }
+
+    interface MainPageListener{
+        fun call(b:Boolean)
+    }
 
 }

@@ -45,6 +45,23 @@ class DouyinIds {
             return baseId+"fh9"
         }
 
+        //todo Main 描述文字
+        fun geta91():String{
+            if(!TaskUtils.isDouyin1270()){
+                return baseId+"a91"
+            }
+            return return baseId+"a91"
+        }
+
+        // todo Main 评论按钮
+        fun getahl():String{
+            //com.ss.android.ugc.aweme:id/ahl
+            if(!TaskUtils.isDouyin1270()){
+                return baseId+"ahl"
+            }
+            return return baseId+"ahl"
+        }
+
     }
 
 
