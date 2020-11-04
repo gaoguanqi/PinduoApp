@@ -8,6 +8,7 @@ import com.birbit.android.jobqueue.config.Configuration
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.Utils
+import com.lzy.okgo.OkGo
 import com.pinduo.auto.app.manager.AppLifeCycleCallBack
 import com.pinduo.auto.app.manager.ForebackLifeObserver
 import com.pinduo.auto.receiver.USBBroadcastReceiver
@@ -64,6 +65,7 @@ class MyApplication : Application() {
     private fun initConfig() {
         Utils.init(this)
         SPUtils.getInstance(AppUtils.getAppPackageName())
+        OkGo.getInstance().init(this)
         registerActivityLifecycleCallbacks(AppLifeCycleCallBack())
         ProcessLifecycleOwner.get().lifecycle.addObserver(ForebackLifeObserver())
         AccessibilityApi.apply {

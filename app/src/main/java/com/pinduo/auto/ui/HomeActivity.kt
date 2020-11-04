@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.KeyEvent
+import com.lzy.okgo.OkGo
 import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.base.BaseActivity
 import com.pinduo.auto.utils.AccessibilityServiceUtils
 import com.pinduo.auto.utils.LogUtils
+import com.pinduo.auto.widget.download.DownLoadUtils
 import com.yhao.floatwindow.FloatWindow
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -34,7 +36,12 @@ class HomeActivity : BaseActivity() {
         }
 
 
+        checkVersion()
         checkAccessibilityPermission()
+    }
+
+    private fun checkVersion() {
+        DownLoadUtils().checkVersion()
     }
 
     private fun checkAccessibilityPermission() {
@@ -68,4 +75,9 @@ class HomeActivity : BaseActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        OkGo.getInstance().cancelAll()
+    }
 }
