@@ -53,7 +53,7 @@ class TaskUtils{
                         PowerManager.FULL_WAKE_LOCK
                         or PowerManager.ACQUIRE_CAUSES_WAKEUP
                     or PowerManager.ON_AFTER_RELEASE, "bright")
-                    wl.acquire(1000L * 10)
+                    wl.acquire(1000L * 600)
                     wl.release()
                     MyApplication.instance.getUiHandler().sendMessage("点亮屏幕")
                 }

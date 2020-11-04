@@ -29,7 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
                 INSTANCE = Room
                     .databaseBuilder(context, AppDatabase::class.java, context.packageName + ".db")
                     .allowMainThreadQueries() //在主线程中查询，默认子线程
-//                    .addMigrations(migration_1_2)//迁移数据库使用，下面会单独拿出来讲
+//                    .addMigrations(migration_1_2)//迁移数据库使用
                     .fallbackToDestructiveMigration()
                     .build()
             }
