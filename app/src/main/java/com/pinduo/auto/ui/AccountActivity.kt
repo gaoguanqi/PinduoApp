@@ -11,8 +11,11 @@ import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.lzy.okgo.model.Response
 import com.pinduo.auto.R
+import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.base.BaseActivity
+import com.pinduo.auto.db.AppDatabase
+import com.pinduo.auto.db.dao.Info
 import com.pinduo.auto.extensions.isResultSuccess
 import com.pinduo.auto.http.api.ApiService
 import com.pinduo.auto.http.entity.CommonEntity
@@ -58,7 +61,7 @@ class AccountActivity : BaseActivity() {
                                 val entity: CommonEntity? = Gson().fromJson<CommonEntity>(it1,CommonEntity::class.java)
                                 entity?.let {it2 ->
                                     if(it2.code.isResultSuccess()){
-                                        goHome(imei)
+                                        goHome(username,imei)
                                     }else{
                                         showTopMessage(it2.msg)
                                     }
@@ -83,10 +86,15 @@ class AccountActivity : BaseActivity() {
                 }
             })
     }
-    private fun goHome(imei: String) {
+    private fun goHome(username: String,imei: String) {
         if (FileUtils.createOrExistsFile(Constants.Path.IMEI_PATH)) {
             if(FileIOUtils.writeFileFromString(Constants.Path.IMEI_PATH,imei)){
                 IMEIUtils.setIMEI(imei)
+                val info = Info()
+                info.imei = imei
+                info.username = username
+                info.userconfig = "篮球"
+                AppDatabase.getInstance(MyApplication.instance).infoDao().insertInfo(info)
                 startActivity(Intent(AccountActivity@this,HomeActivity::class.java))
                 this.finish()
             }else{

@@ -7,6 +7,8 @@ import android.view.KeyEvent
 import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.base.BaseActivity
+import com.pinduo.auto.db.AppDatabase
+import com.pinduo.auto.db.dao.Info
 import com.pinduo.auto.utils.AccessibilityServiceUtils
 import com.pinduo.auto.utils.LogUtils
 import com.yhao.floatwindow.FloatWindow
@@ -34,6 +36,13 @@ class HomeActivity : BaseActivity() {
         }
 
         checkAccessibilityPermission()
+
+        AppDatabase.getInstance(MyApplication.instance).infoDao().getCurrentInfo()?.apply {
+            LogUtils.logGGQ("info-->>>${this.id} - ${this.username} - ${this.imei} - ${this.userconfig}")
+        }
+
+
+
 
     }
 

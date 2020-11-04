@@ -1,7 +1,9 @@
 package com.pinduo.auto.widget.download
 
 import android.content.Context
+import android.text.TextUtils
 import android.text.format.Formatter
+import com.blankj.utilcode.util.AppUtils
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.FileCallback
 import com.lzy.okgo.model.Progress
@@ -11,9 +13,9 @@ import com.pinduo.auto.utils.LogUtils
 import java.io.File
 
 
-class DownLoad {
+class DownLoadUtils {
 
-    fun downFile(context: Context,url:String){
+    fun downLoadAndInstallAPK(context: Context,url:String,listener: DownLoadListener){
 
         OkGo.get<File>(url)
             .tag(this)
@@ -35,8 +37,14 @@ class DownLoad {
                 }
 
                 override fun onSuccess(response: Response<File>?) {
-                    LogUtils.logGGQ("下载成功:${response?.body()?.path}")
-
+                    LogUtils.logGGQ("下载成功")
+//                    AppUtils.installApp()
+                    response?.body()?.let {
+                        if(!TextUtils.isEmpty(it.path)){
+                            listener.onSuccess(it.path)
+                            LogUtils.logGGQ("下载成功:${it.path}")
+                        }
+                    }
                 }
 
                 override fun onError(response: Response<File>?) {
@@ -53,7 +61,8 @@ class DownLoad {
             })
 
     }
+}
 
-
-
+interface DownLoadListener{
+    fun onSuccess(path:String)
 }

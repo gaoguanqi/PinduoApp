@@ -9,6 +9,7 @@ import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.base.BaseActivity
 import com.pinduo.auto.ui.AccountActivity
 import com.pinduo.auto.ui.HomeActivity
+import com.pinduo.auto.ui.TestActivity
 import com.pinduo.auto.utils.IMEIUtils
 import com.pinduo.auto.utils.PermissionUtil
 import com.pinduo.auto.utils.RequestPermission
@@ -35,6 +36,7 @@ class SplashActivity : BaseActivity() {
         PermissionUtil.applyPermissions(object : RequestPermission {
             override fun onRequestPermissionSuccess() {
                 launchTarget()
+//                launchTest()
             }
 
             override fun onRequestPermissionFailure(permissions: List<String>) {
@@ -57,5 +59,10 @@ class SplashActivity : BaseActivity() {
             startActivity(Intent(SplashActivity@ this, HomeActivity::class.java))
             finish()
         }
+    }
+
+    private fun launchTest(){
+        startActivity(Intent(SplashActivity@ this, TestActivity::class.java))
+        this.finish()
     }
 }
