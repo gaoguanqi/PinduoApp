@@ -33,6 +33,7 @@ class HomeActivity : BaseActivity() {
             }
         }
 
+
         checkAccessibilityPermission()
     }
 

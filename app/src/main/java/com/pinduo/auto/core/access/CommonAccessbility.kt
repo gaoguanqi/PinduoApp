@@ -3,19 +3,11 @@ package com.pinduo.auto.core.access
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.net.Uri
-import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.AppScope
 import cn.vove7.andro_accessibility_api.api.waitForPage
-import cn.vove7.andro_accessibility_api.api.withText
-import cn.vove7.andro_accessibility_api.utils.whileWaitTime
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
-import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.NodeUtils
-import com.pinduo.auto.widget.observers.ObserverManager
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlin.math.min
 
 class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbility>(){
 
@@ -61,6 +53,9 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
             listener.call(false)
         }
     }
+
+
+
 
     interface MainPageListener{
         fun call(b:Boolean)

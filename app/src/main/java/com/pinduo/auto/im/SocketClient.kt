@@ -36,6 +36,9 @@ class SocketClient private constructor(){
         val opts:IO.Options = IO.Options()
         opts.reconnectionDelay = 1000L
         opts.transports = arrayOf(WebSocket.NAME)
+
+
+
         uiHandler.sendMessage("imei:${imei}")
         try {
             socket = IO.socket(Config.IO_SERVER_URL,opts)

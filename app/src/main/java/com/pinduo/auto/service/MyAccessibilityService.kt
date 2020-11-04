@@ -1,14 +1,11 @@
 package com.pinduo.auto.service
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.text.TextUtils
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.AppScope
-import cn.vove7.andro_accessibility_api.api.waitForPage
 import com.birbit.android.jobqueue.CancelResult
 import com.birbit.android.jobqueue.Job
 import com.birbit.android.jobqueue.TagConstraint
@@ -31,10 +28,8 @@ import com.pinduo.auto.widget.timer.MyScheduledExecutor
 import com.pinduo.auto.widget.timer.TimerTickListener
 import com.pinduo.auto.http.entity.TaskEntity
 import com.pinduo.auto.utils.NodeUtils
-import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
 import com.yhao.floatwindow.*
-import kotlinx.coroutines.withTimeoutOrNull
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -154,7 +149,7 @@ class MyAccessibilityService :AccessibilityApi(){
                 LogUtils.logGGQ("onMark：${mark}")
                 uiHandler.clearMessage()
                 uiHandler.sendMessage("onMark：${mark}")
-//                TaskUtils.wakeUpAndUnlock()
+
 
             }
 

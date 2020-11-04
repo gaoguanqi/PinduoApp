@@ -1,14 +1,15 @@
 package com.pinduo.auto.utils
 
 import android.annotation.SuppressLint
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
 import android.os.PowerManager
 import android.text.TextUtils
+import cn.vove7.andro_accessibility_api.api.scrollUp
 import com.blankj.utilcode.util.AppUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
-import org.w3c.dom.Text
 import kotlin.random.Random
 
 
@@ -41,18 +42,36 @@ class TaskUtils{
         }
 
 
+
         @SuppressLint("InvalidWakeLockTag")
         fun wakeUpAndUnlock(){
             // 获取电源管理器对象
             val pm:PowerManager? = MyApplication.instance.getSystemService(Context.POWER_SERVICE) as PowerManager
             pm?.let {
                 if(!it.isInteractive){
-                    val wl: PowerManager.WakeLock = it.newWakeLock((PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.SCREEN_BRIGHT_WAKE_LOCK),"bright")
-                    wl.acquire(10*60*1000L /*10 minutes*/)
+                    val wl: PowerManager.WakeLock = it.newWakeLock(
+                        PowerManager.FULL_WAKE_LOCK
+                        or PowerManager.ACQUIRE_CAUSES_WAKEUP
+                    or PowerManager.ON_AFTER_RELEASE, "bright")
+                    wl.acquire(1000L * 10)
                     wl.release()
-                    MyApplication.instance.getUiHandler().sendMessage("屏幕点亮")
+                    MyApplication.instance.getUiHandler().sendMessage("点亮屏幕")
                 }
             }
+
+            val km:KeyguardManager? = MyApplication.instance.getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+            val kLock = km?.newKeyguardLock("unLock")
+            kLock?.let {
+                it.disableKeyguard()
+            }
+            //upScreen()
+        }
+
+        fun upScreen(){
+            scrollUp()
         }
     }
+
+
+
 }

@@ -9,7 +9,8 @@ import android.os.BatteryManager
 import android.text.TextUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
-import com.pinduo.auto.utils.NodeUtils
+import com.pinduo.auto.utils.LogUtils
+import com.pinduo.auto.utils.TaskUtils
 
 
 class USBBroadcastReceiver : BroadcastReceiver() {
@@ -26,7 +27,15 @@ class USBBroadcastReceiver : BroadcastReceiver() {
             filter.addAction(Intent.ACTION_BATTERY_OKAY)
             filter.addAction(Intent.ACTION_POWER_CONNECTED)
             filter.addAction(Intent.ACTION_POWER_DISCONNECTED)
+
+            /* 注册屏幕唤醒时的广播 */
+            filter.addAction(Intent.ACTION_SCREEN_ON)
+            /* 注册机器锁屏时的广播 */
+            filter.addAction(Intent.ACTION_SCREEN_OFF)
+
             context.registerReceiver(receiver, filter)
+
+
 //            val mfilter = IntentFilter(ACTION_USB_PERMISSION)
 //            mfilter.addAction("android.hardware.usb.action.USB_STATE")
 //            mfilter.addAction("android.hardware.usb.action.USB_DEVICE_ATTACHED")
@@ -73,7 +82,8 @@ class USBBroadcastReceiver : BroadcastReceiver() {
                             val scale: Int = it.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
                             //电量百分比
                             val batteryPct = level / scale
-                            MyApplication.instance.getUiHandler().sendMessage("充电：${level}--${batteryPct}--${scale}")
+                            MyApplication.instance.getUiHandler()
+                                .sendMessage("充电：${level}--${batteryPct}--${scale}")
                         }
                     }
 
@@ -97,6 +107,20 @@ class USBBroadcastReceiver : BroadcastReceiver() {
                     Intent.ACTION_POWER_DISCONNECTED -> {
                         //电源断开
                         MyApplication.instance.getUiHandler().sendMessage("电源断开")
+                    }
+
+
+                    Intent.ACTION_SCREEN_ON -> {
+                        //屏幕唤醒
+                        MyApplication.instance.getUiHandler().sendMessage("屏幕已唤醒")
+                        LogUtils.logGGQ("屏幕唤醒")
+                    }
+
+                    Intent.ACTION_SCREEN_OFF -> {
+                        //屏幕锁屏
+                        MyApplication.instance.getUiHandler().sendMessage("屏幕已锁屏")
+                        LogUtils.logGGQ("屏幕锁屏")
+                        TaskUtils.wakeUpAndUnlock()
                     }
                 }
             }
