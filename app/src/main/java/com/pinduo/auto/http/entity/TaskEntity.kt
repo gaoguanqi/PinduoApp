@@ -22,5 +22,7 @@ data class TaskEntity(val code:Int = 0,
                       val is_attention:String = "",
                       val hot_num:String = "",
                       val is_send_heart:String = "",
-                      val zhixing_time:String = ""
+                      val zhixing_time:String = "",
+                      val query_task_id:String = "",
+                      val p_query_task_id:String = ""
 )
