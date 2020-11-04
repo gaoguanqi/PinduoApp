@@ -90,11 +90,13 @@ class AccountActivity : BaseActivity() {
         if (FileUtils.createOrExistsFile(Constants.Path.IMEI_PATH)) {
             if(FileIOUtils.writeFileFromString(Constants.Path.IMEI_PATH,imei)){
                 IMEIUtils.setIMEI(imei)
-                val info = Info()
-                info.imei = imei
-                info.username = username
-                info.userconfig = "篮球"
+                val info = Info().apply {
+                    this.imei = imei
+                    this.username = username
+                    this.userconfig = "篮球"
+                }
                 AppDatabase.getInstance(MyApplication.instance).infoDao().insertInfo(info)
+
                 startActivity(Intent(AccountActivity@this,HomeActivity::class.java))
                 this.finish()
             }else{
