@@ -89,7 +89,7 @@ class AccountActivity : BaseActivity() {
     private fun goHome(username: String,imei: String) {
         if (FileUtils.createOrExistsFile(Constants.Path.IMEI_PATH)) {
             if(FileIOUtils.writeFileFromString(Constants.Path.IMEI_PATH,imei)){
-                IMEIUtils.setIMEI(imei)
+                MyApplication.instance.setIMEI(imei)
                 val info = Info().apply {
                     this.imei = imei
                     this.username = username

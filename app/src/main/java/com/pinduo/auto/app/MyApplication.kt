@@ -20,6 +20,8 @@ class MyApplication : Application() {
     private lateinit var uiHandler: UiHandler
     private lateinit var jobManager: JobManager
 
+    private var imei:String = ""
+
     private val usbBroadcastReceiver: USBBroadcastReceiver by lazy {
         USBBroadcastReceiver()
     }
@@ -37,6 +39,13 @@ class MyApplication : Application() {
 
     fun getJobManager(): JobManager {
         return jobManager
+    }
+
+    fun getIMEI():String{
+        return imei
+    }
+    fun setIMEI(i:String){
+        this.imei = i
     }
 
     override fun onCreate() {

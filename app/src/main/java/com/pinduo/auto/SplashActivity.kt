@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.text.TextUtils
 import com.blankj.utilcode.util.FileIOUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.base.BaseActivity
 import com.pinduo.auto.ui.AccountActivity
 import com.pinduo.auto.ui.HomeActivity
 import com.pinduo.auto.ui.TestActivity
-import com.pinduo.auto.utils.IMEIUtils
 import com.pinduo.auto.utils.PermissionUtil
 import com.pinduo.auto.utils.RequestPermission
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -55,7 +55,7 @@ class SplashActivity : BaseActivity() {
             startActivity(Intent(SplashActivity@ this, AccountActivity::class.java))
             this.finish()
         }else{
-            IMEIUtils.setIMEI(imei!!)
+            MyApplication.instance.setIMEI(imei!!)
             startActivity(Intent(SplashActivity@ this, HomeActivity::class.java))
             finish()
         }

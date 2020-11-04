@@ -1,13 +1,9 @@
 package com.pinduo.auto.im
 
-import android.text.TextUtils
-import com.blankj.utilcode.util.FileIOUtils
 import com.google.gson.Gson
 import com.pinduo.auto.app.MyApplication
-import com.pinduo.auto.utils.IMEIUtils
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.app.config.Config
-import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.http.entity.TaskEntity
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -27,6 +23,7 @@ class SocketClient private constructor(){
     private var listener: OnSocketListener? = null
 
     private val uiHandler by lazy { MyApplication.instance.getUiHandler() }
+    private val imei:String by lazy { MyApplication.instance.getIMEI()}
 
 
     companion object{
@@ -39,6 +36,7 @@ class SocketClient private constructor(){
         val opts:IO.Options = IO.Options()
         opts.reconnectionDelay = 1000L
         opts.transports = arrayOf(WebSocket.NAME)
+        uiHandler.sendMessage("imei:${imei}")
         try {
             socket = IO.socket(Config.IO_SERVER_URL,opts)
         }catch (e: URISyntaxException){
@@ -49,13 +47,6 @@ class SocketClient private constructor(){
                 socket?.let {
                     if(it.connected()){
                         uiHandler.sendMessage("已连接："+ it.id())
-                        var imei:String = IMEIUtils.getIMEI()
-                        if(TextUtils.isEmpty(imei)){
-                            uiHandler.sendMessage("imei empty")
-                            imei = FileIOUtils.readFile2String(Constants.Path.IMEI_PATH)
-                            IMEIUtils.setIMEI(imei)
-                        }
-
                         uiHandler.sendMessage(imei)
                         sendMessage("login",imei)
                         LogUtils.logGGQ("imei:${imei}")
