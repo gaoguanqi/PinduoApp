@@ -29,7 +29,7 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
             .getCurrentInfo()?.userconfig?.let {
             userconfig = it
             // todo 账号属性匹配字段 登录时记录到数据库，目前先写死
-            userconfig = "的"
+            userconfig = "郑州"
         }
     }
 
@@ -59,7 +59,7 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
                         MyApplication.instance.getUiHandler().sendMessage(txt!!)
                         WaitUtil.sleep(2000L)
                         if (txt.contains(userconfig)) {
-                            MyApplication.instance.getUiHandler().sendMessage("包含文本-->>${userconfig}")
+                            MyApplication.instance.getUiHandler().sendMessage("--包含文本-->>${userconfig}")
                             withId(DouyinIds.getayl())?.finder?.find()?.last()?.let {it1 ->
                                 val desc:String? = it1.desc()
                                 if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")){
@@ -84,7 +84,7 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
                                 }
                             }
                         } else {
-                            MyApplication.instance.getUiHandler().sendMessage("---不包含文本--")
+                            MyApplication.instance.getUiHandler().sendMessage("---不包含文本-->>${userconfig}")
                         }
                     }
                 }

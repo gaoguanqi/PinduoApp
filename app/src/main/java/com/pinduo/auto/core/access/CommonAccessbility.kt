@@ -46,6 +46,22 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
             Constants.Douyin.PAGE_YANG ->{
                 NodeUtils.tryWithText("我知道了")
             }
+            Constants.Douyin.PAGE_DN ->{
+                NodeUtils.tryWithText("取消")
+            }
+            Constants.Douyin.PAGE_DB,
+            Constants.Douyin.PAGE_USERPROFIL ->{
+                NodeUtils.tryWithText("好的")
+            }
+            Constants.Douyin.PAGE_CX ->{
+                NodeUtils.tryWithText("同意")
+            }
+            Constants.Douyin.PAGE_RECOMMENDCONTACT ->{
+                NodeUtils.tryWithText("稍后")
+            }
+            Constants.Douyin.PAGE_FLOATVIEW_D ->{
+                NodeUtils.tryWithText("暂不使用")
+            }
         }
     }
 

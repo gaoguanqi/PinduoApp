@@ -64,12 +64,24 @@ class Constants {
         const val PAGE_LIVE_MORE = "com.bytedance.android.livesdk.chatroom.viewmodule.toolbar.LiveToolbarMoreDialog"
         //直播间购物车
         const val PAGE_LIVE_CART = "com.bytedance.android.livesdk.livecommerce.dialog.ECBottomDialog"
-        //抖音版本更新
+        //抖音版本更新 以后再说
         const val PAGE_UPDATE_X = "com.ss.android.ugc.aweme.update.x"
         const val PAGE_UPDATE_Y = "com.ss.android.ugc.aweme.update.y"
 
         //进入儿童/青少年模式 我知道了
         const val PAGE_YANG = "android.app.AlertDialog"
+        //弹出通讯录  取消
+        const val PAGE_DN = "com.ss.android.ugc.aweme.main.dn"
+        //个人信息 好的
+        const val PAGE_DB = "com.ss.android.ugc.aweme.main.db"
+        //个人信息 好的
+        const val PAGE_USERPROFIL = "com.ss.android.ugc.aweme.profile.ui.UserProfileActivity"
+        //个人信息保护指引 同意
+        const val PAGE_CX = "com.ss.android.ugc.aweme.main.cx"
+        //通知,是件很重要的事情  稍后
+        const val PAGE_RECOMMENDCONTACT = "com.ss.android.ugc.aweme.friends.ui.RecommendContactActivity"
+        //悬浮窗播放功能上线啦 暂不使用
+        const val PAGE_FLOATVIEW_D = "com.bytedance.android.livesdk.floatview.d"
         //
 
     }
