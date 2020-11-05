@@ -1,6 +1,7 @@
 package com.pinduo.auto.app
 
 import android.app.Application
+import android.text.TextUtils
 import androidx.lifecycle.ProcessLifecycleOwner
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import com.birbit.android.jobqueue.JobManager

@@ -48,6 +48,8 @@ class MyAccessibilityService :AccessibilityApi(){
 
     override val enableListenAppScope: Boolean = true
 
+    private lateinit var taskData: TaskData
+
 
     private val floatWindow:FloatWindow.B by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED){
         val view: View = this.baseContext.layoutInflater.inflate(R.layout.layout_float_view, null)
@@ -100,7 +102,9 @@ class MyAccessibilityService :AccessibilityApi(){
             }
 
             override fun onDone(job: Job) {
-                LogUtils.logGGQ("onDone：${(job as BaseJob).data.task}")
+                val data = (job as BaseJob).data
+                LogUtils.logGGQ("onDone：${data.task}")
+
             }
 
             override fun onAfterJobRun(job: Job, resultCode: Int) {
@@ -211,7 +215,9 @@ class MyAccessibilityService :AccessibilityApi(){
                                         WaitUtil.sleep(2000L)
                                         socketClient.onReceiveStatus()
                                         runnable.onReStart(software,task,zxTime.toLong() + Constants.GlobalValue.plusTime)
-                                        AccountUpAccessbility.INSTANCE.doSwipe(minTime,maxTime)
+                                        AccountUpAccessbility.INSTANCE.setSwiped(true)
+//                                        AccountUpAccessbility.INSTANCE.doSwipe(minTime,maxTime)
+                                        AccountUpAccessbility.INSTANCE.doSwipe3(minTime,maxTime)
                                     }
                                 })
                             }else{

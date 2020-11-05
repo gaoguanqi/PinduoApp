@@ -60,7 +60,7 @@ class NodeUtils {
             }
         }
 
-        private val duration: Long = 1200L
+        private val duration: Long = 500L
         private val width = ScreenUtils.getScreenWidth() //1080
         private val height = ScreenUtils.getScreenHeight()//1920
 

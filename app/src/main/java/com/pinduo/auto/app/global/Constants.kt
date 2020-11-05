@@ -67,6 +67,9 @@ class Constants {
         //抖音版本更新
         const val PAGE_UPDATE_X = "com.ss.android.ugc.aweme.update.x"
         const val PAGE_UPDATE_Y = "com.ss.android.ugc.aweme.update.y"
+
+        //进入儿童/青少年模式 我知道了
+        const val PAGE_YANG = "android.app.AlertDialog"
         //
 
     }

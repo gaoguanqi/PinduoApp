@@ -6,7 +6,6 @@ import android.net.Uri
 import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.api.*
-import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -14,7 +13,6 @@ import com.pinduo.auto.core.ids.DouyinIds
 import com.pinduo.auto.im.SocketClient
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.NodeUtils
-import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
 import com.pinduo.auto.widget.observers.ObserverListener
 import com.pinduo.auto.widget.observers.ObserverManager
@@ -175,7 +173,6 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             }
         }
     }
-
 
     //---------------购物车-----
     fun doShopCart() {

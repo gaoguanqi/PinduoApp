@@ -43,6 +43,9 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
             Constants.Douyin.PAGE_UPDATE_X,Constants.Douyin.PAGE_UPDATE_Y ->{
                 NodeUtils.tryWithText("以后再说")
             }
+            Constants.Douyin.PAGE_YANG ->{
+                NodeUtils.tryWithText("我知道了")
+            }
         }
     }
 

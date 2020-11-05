@@ -36,7 +36,7 @@ class HomeActivity : BaseActivity() {
         }
 
 
-        checkVersion()
+//        checkVersion()
         checkAccessibilityPermission()
     }
 

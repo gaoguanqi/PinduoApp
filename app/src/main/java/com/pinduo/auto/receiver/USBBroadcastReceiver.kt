@@ -100,8 +100,8 @@ class USBBroadcastReceiver : BroadcastReceiver() {
                     Intent.ACTION_POWER_CONNECTED -> {
                         //电源接通
                         MyApplication.instance.getUiHandler().sendMessage("电源接通")
-                        val x = ScreenUtils.getScreenWidth() / 2
-                        val y = ScreenUtils.getScreenHeight() - 100
+                        val x = ScreenUtils.getScreenWidth()
+                        val y = ScreenUtils.getScreenHeight()
                     }
 
                     Intent.ACTION_POWER_DISCONNECTED -> {

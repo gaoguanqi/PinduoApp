@@ -1,9 +1,12 @@
 package com.pinduo.auto.im
 
+import android.text.TextUtils
+import com.blankj.utilcode.util.FileIOUtils
 import com.google.gson.Gson
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.app.config.Config
+import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.http.entity.TaskEntity
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -23,7 +26,8 @@ class SocketClient private constructor(){
     private var listener: OnSocketListener? = null
 
     private val uiHandler by lazy { MyApplication.instance.getUiHandler() }
-    private val imei:String by lazy { MyApplication.instance.getIMEI()}
+
+    private var imei:String
 
 
     companion object{
@@ -36,8 +40,11 @@ class SocketClient private constructor(){
         val opts:IO.Options = IO.Options()
         opts.reconnectionDelay = 1000L
         opts.transports = arrayOf(WebSocket.NAME)
-
-
+        imei = MyApplication.instance.getIMEI()
+        if(TextUtils.isEmpty(imei)){
+            imei = FileIOUtils.readFile2String(Constants.Path.IMEI_PATH)
+            MyApplication.instance.setIMEI(imei)
+        }
 
         uiHandler.sendMessage("imei:${imei}")
         try {
