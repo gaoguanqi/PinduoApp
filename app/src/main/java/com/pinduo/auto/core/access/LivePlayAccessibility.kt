@@ -85,7 +85,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             }
         }catch (e:Exception){
             e.printStackTrace()
-            MyApplication.instance.getUiHandler().sendMessage("评论异常！！！")
+            MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
             withId(DouyinIds.getfvs())?.globalClick()
         }finally {
             if(isSuccess){
@@ -164,7 +164,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             }
         }catch (e:Exception){
             e.printStackTrace()
-            MyApplication.instance.getUiHandler().sendMessage("点赞异常！！！")
+            MyApplication.instance.getUiHandler().sendMessage("点赞失败！！！")
         }finally {
             if(clickCount >= count){
                 getSocketClient()?.sendSuccess()
@@ -212,7 +212,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             }
         }catch (e:Exception){
             e.printStackTrace()
-            MyApplication.instance.getUiHandler().sendMessage("购物车异常！！！")
+            MyApplication.instance.getUiHandler().sendMessage("购物车失败！！！")
         }finally {
             if(isSuccess){
                 getSocketClient()?.sendSuccess()

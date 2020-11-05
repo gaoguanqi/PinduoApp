@@ -216,8 +216,7 @@ class MyAccessibilityService :AccessibilityApi(){
                                         socketClient.onReceiveStatus()
                                         runnable.onReStart(software,task,zxTime.toLong() + Constants.GlobalValue.plusTime)
                                         AccountUpAccessbility.INSTANCE.setSwiped(true)
-//                                        AccountUpAccessbility.INSTANCE.doSwipe(minTime,maxTime)
-                                        AccountUpAccessbility.INSTANCE.doSwipe3(minTime,maxTime)
+                                        AccountUpAccessbility.INSTANCE.doSwipe(minTime,maxTime)
                                     }
                                 })
                             }else{

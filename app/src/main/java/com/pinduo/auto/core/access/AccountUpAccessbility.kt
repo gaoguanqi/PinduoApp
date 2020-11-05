@@ -8,7 +8,6 @@ import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.core.ids.DouyinIds
 import com.pinduo.auto.db.AppDatabase
-import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.NodeUtils
 import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
@@ -44,83 +43,12 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
         isSwiped = b
     }
 
-    fun doSwipe(minTime:String,maxTime:String){
-        do {
-            try {
-                withId(DouyinIds.geta91())?.let {
-                    val txt: String? = it.text?.toString()
-                    if (!TextUtils.isEmpty(txt) && !TextUtils.isEmpty(userconfig)) {
-                        MyApplication.instance.getUiHandler().sendMessage(txt!!)
-                        if (txt.contains(userconfig)) {
-                            MyApplication.instance.getUiHandler().sendMessage("包含文本-->>${userconfig}")
-                            withId(DouyinIds.getayl())?.let {it1 ->
-                                val desc:String? = it1.desc()
-                                if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")){
-                                    val isClick:Boolean = it1.globalClick()
-                                    if(isClick)MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
-                                    WaitUtil.sleep(2000L)
-                                    withId(DouyinIds.getahl())?.globalClick()?.let { it2 ->
-                                        if(it2){
-                                            WaitUtil.sleep(2000L)
-                                            withId(DouyinIds.getahq())?.trySetText(txt)?.let { it3 ->
-                                                if(it3){
-                                                    val isSend:Boolean = withId(DouyinIds.getai_())?.globalClick()
-                                                    if(isSend){
-                                                        MyApplication.instance.getUiHandler().sendMessage("评论成功->>${txt}")
-                                                    }
-                                                    WaitUtil.sleep(2000L)
-                                                    withId(DouyinIds.getl4())?.globalClick()
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            MyApplication.instance.getUiHandler().sendMessage("---不包含文本--")
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                MyApplication.instance.getUiHandler().sendMessage("未找到文本节点")
-            }
-            val delayTime:Long = TaskUtils.randomTime(minTime,maxTime)
-            WaitUtil.sleep(delayTime)
-            NodeUtils.onSwipe(service)
-        }while (getSwiped())
-    }
-
-
-    fun doSwipe2(minTime:String,maxTime:String){
-        do {
-            try {
-                withId(DouyinIds.geta91())?.finder?.find()?.let {
-                    LogUtils.logGGQ("查找到${it.size}")
-                    it.forEach {i ->
-                        LogUtils.logGGQ(i.id)
-                    }
-                }
-
-                withId(DouyinIds.geta91())?.finder?.find()?.last()?.let {
-
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                MyApplication.instance.getUiHandler().sendMessage("未找到文本节点")
-            }
-            val delayTime:Long = TaskUtils.randomTime(minTime,maxTime)
-            WaitUtil.sleep(delayTime)
-            NodeUtils.onSwipe(service)
-        }while (getSwiped())
-    }
-
 
     private var isClose:Boolean = true
     private val x = ScreenUtils.getScreenWidth() - 50
     private val y = 10
 
-    fun doSwipe3(minTime:String,maxTime:String){
+    fun doSwipe(minTime:String,maxTime:String){
         do {
             isClose = true
             try {
