@@ -62,7 +62,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
 
     // 发评论
-    fun doSpeak(content: String){
+    fun doSpeak(isExecute:Boolean,content: String){
         isSuccess = false
         try {
             if(withId(DouyinIds.getb82())?.globalClick()){
@@ -88,16 +88,18 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
             withId(DouyinIds.getfvs())?.globalClick()
         }finally {
-            if(isSuccess){
-                getSocketClient()?.sendSuccess()
-            }else{
-                getSocketClient()?.sendError()
+            if(!isExecute){
+                if(isSuccess){
+                    getSocketClient()?.sendSuccess()
+                }else{
+                    getSocketClient()?.sendError()
+                }
             }
         }
     }
 
 
-    private fun startLiveRoom(zhiboNum: String) {
+   private fun startLiveRoom(zhiboNum: String) {
         setLiveURI(zhiboNum)
         ObserverManager.instance.add(Constants.Task.task3,this)
         if (!isInLiveRoom() && !TextUtils.isEmpty(getLiveURI())) {

@@ -26,6 +26,20 @@ class TaskUtils{
             return content
         }
 
+        fun getContentList(content: String):ArrayList<String>{
+            val array = arrayListOf<String>()
+            if(content.contains(";")){
+                content.split(";").let {
+                    array.addAll(it)
+                }
+            }else{
+                array.add(content)
+            }
+            return array
+        }
+
+
+
         fun randomTime(min:String,max:String):Long{
             if(TextUtils.isEmpty(min) || TextUtils.isEmpty(max) || TextUtils.equals(min,"0") || TextUtils.equals(max,"0")){
                 return 1000L

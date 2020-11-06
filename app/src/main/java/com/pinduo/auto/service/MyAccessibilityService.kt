@@ -28,6 +28,7 @@ import com.pinduo.auto.widget.timer.MyScheduledExecutor
 import com.pinduo.auto.widget.timer.TimerTickListener
 import com.pinduo.auto.http.entity.TaskEntity
 import com.pinduo.auto.utils.NodeUtils
+import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
 import com.yhao.floatwindow.*
 import java.util.concurrent.Executors
@@ -238,13 +239,35 @@ class MyAccessibilityService :AccessibilityApi(){
 
                         Constants.Task.task4 -> {
 
-                            MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = task,content = entity.fayan))){
-                                //回调
+                            val mList:ArrayList<String> = TaskUtils.getContentList(entity.fayan)
+                            MyApplication.instance.getUiHandler().sendMessage("评论数据size->>${mList.size}")
+                            MyApplication.instance.getJobManager().run {
+                                mList.forEachIndexed { index, s ->
+                                    if(mList.size > 1){
+                                        if(index == mList.lastIndex){
+                                            this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = s))){
+
+                                            }
+                                        }else{
+                                            this.addJobInBackground(LiveTaskJob(TaskData(isExecute = true,task = task,content = s))){
+
+                                            }
+                                        }
+                                    }else{
+                                        this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = s))){
+
+                                        }
+                                    }
+                                }
                             }
 
+
+
+
+//
 //                            MyApplication.instance.getJobManager().run {
-//                                haList.forEach {
-//                                    this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = it))){
+//                                list.forEach {
+//                                    this.addJobInBackground(LiveTaskJob(TaskData(isExecute = true,task = task,content = it))){
 //
 //                                    }
 //                                }

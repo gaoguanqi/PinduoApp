@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.core.ids.DouyinIds
 import com.pinduo.auto.db.AppDatabase
+import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.NodeUtils
 import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
@@ -29,8 +30,10 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
             .getCurrentInfo()?.userconfig?.let {
             userconfig = it
             // todo 账号属性匹配字段 登录时记录到数据库，目前先写死
-            userconfig = "郑州"
+
         }
+
+        userconfig = "的"
     }
 
     override fun initService(service: AccessibilityService): AccountUpAccessbility {
@@ -91,6 +94,7 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
             } catch (e: Exception) {
                 e.printStackTrace()
                 MyApplication.instance.getUiHandler().sendMessage("未找到文本节点")
+                LogUtils.logGGQ("任务1异常：${e.message}")
             }finally {
                 //容错处理 如果未点击关闭按钮,双击右上角
                 if(!isClose){

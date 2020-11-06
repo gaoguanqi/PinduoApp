@@ -20,6 +20,5 @@ class TestActivity : BaseActivity() {
     private fun onTestDownLoad() {
         val downLoadUtils = DownLoadUtils()
         downLoadUtils.downLoadAndInstallAPK(MyApplication.instance.applicationContext, url)
-
     }
 }
