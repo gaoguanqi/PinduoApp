@@ -18,6 +18,7 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
 
     private var isSwiped: Boolean = false
     private lateinit var userconfig: String
+    private val listContains = arrayListOf<String>("服装","衣服","穿搭","上衣","裤子")
 
     companion object {
         val INSTANCE: AccountUpAccessbility by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -32,8 +33,10 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
             // todo 账号属性匹配字段 登录时记录到数据库，目前先写死
 
         }
-
         userconfig = "的"
+//        userconfig = "服装,衣服,穿搭,上衣,裤子"
+
+//        listContains.add("服装")
     }
 
     override fun initService(service: AccessibilityService): AccountUpAccessbility {
@@ -54,47 +57,59 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
     fun doSwipe(minTime:String,maxTime:String){
         do {
             isClose = true
+            userconfig = ""
             try {
                 WaitUtil.sleep(1000L)
-                withId(DouyinIds.geta91())?.finder?.find()?.last()?.let {
-                    val txt: String? = it.text?.toString()
-                    if (!TextUtils.isEmpty(txt) && !TextUtils.isEmpty(userconfig)) {
-                        MyApplication.instance.getUiHandler().sendMessage(txt!!)
-                        WaitUtil.sleep(2000L)
-                        if (txt.contains(userconfig)) {
-                            MyApplication.instance.getUiHandler().sendMessage("--包含文本-->>${userconfig}")
-                            withId(DouyinIds.getayl())?.finder?.find()?.last()?.let {it1 ->
-                                val desc:String? = it1.desc()
-                                if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")){
-                                    val isClick:Boolean = it1.globalClick()
-                                    if(isClick)MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
-                                    WaitUtil.sleep(2000L)
-                                    withId(DouyinIds.getahl())?.globalClick()?.let { it2 ->
-                                        if(it2){
-                                            WaitUtil.sleep(2000L)
-                                            withId(DouyinIds.getahq())?.trySetText(txt)?.let { it3 ->
-                                                if(it3){
-                                                    val isSend:Boolean = withId(DouyinIds.getai_())?.globalClick()
-                                                    if(isSend){
-                                                        MyApplication.instance.getUiHandler().sendMessage("评论成功->>${txt}")
+                withId(DouyinIds.geta91())?.finder?.find()?.let {
+                    if(it.isNotEmpty()){
+                        val txt: String? = it.last()?.text?.toString()
+                        if (!TextUtils.isEmpty(txt)) {
+                            MyApplication.instance.getUiHandler().sendMessage(txt!!)
+                            WaitUtil.sleep(2000L)
+                            listContains.forEach {t ->
+                                if(txt.contains(t)){
+                                    userconfig = t
+                                }
+                            }
+                            if (!TextUtils.isEmpty(userconfig)) {
+                                MyApplication.instance.getUiHandler().sendMessage("--包含文本-->>${userconfig}")
+                                withId(DouyinIds.getayl())?.finder?.find()?.last()?.let {it1 ->
+                                    val desc:String? = it1.desc()
+                                    if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")){
+                                        val isClick:Boolean = it1.globalClick()
+                                        if(isClick)MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
+                                        WaitUtil.sleep(2000L)
+                                        withId(DouyinIds.getahl())?.globalClick()?.let { it2 ->
+                                            if(it2){
+                                                WaitUtil.sleep(2000L)
+                                                withId(DouyinIds.getahq())?.trySetText(txt)?.let { it3 ->
+                                                    if(it3){
+                                                        val isSend:Boolean = withId(DouyinIds.getai_())?.globalClick()
+                                                        if(isSend){
+                                                            MyApplication.instance.getUiHandler().sendMessage("评论成功->>${txt}")
+                                                        }
+                                                        WaitUtil.sleep(2000L)
+                                                        isClose = withId(DouyinIds.getl4())?.globalClick()
                                                     }
-                                                    WaitUtil.sleep(2000L)
-                                                    isClose = withId(DouyinIds.getl4())?.globalClick()
                                                 }
+                                                isClose = withId(DouyinIds.getl4())?.click()
                                             }
                                         }
                                     }
                                 }
+                            } else {
+                                MyApplication.instance.getUiHandler().sendMessage("---不包含文本-->>${userconfig}")
                             }
-                        } else {
-                            MyApplication.instance.getUiHandler().sendMessage("---不包含文本-->>${userconfig}")
                         }
+                    }else{
+                        MyApplication.instance.getUiHandler().sendMessage("文本节点->>empty")
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 MyApplication.instance.getUiHandler().sendMessage("未找到文本节点")
                 LogUtils.logGGQ("任务1异常：${e.message}")
+
             }finally {
                 //容错处理 如果未点击关闭按钮,双击右上角
                 if(!isClose){
