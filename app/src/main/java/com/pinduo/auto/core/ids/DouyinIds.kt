@@ -77,8 +77,9 @@ class DouyinIds {
         //todo Main 评论EditText
         fun getahq():String{
             //com.ss.android.ugc.aweme:id/ahq 12.7
+            //com.ss.android.ugc.aweme:id/adq 12.2
             if(!TaskUtils.isDouyin1270()){
-                return baseId+"ahq"
+                return baseId+"adq"
             }
             return baseId+"ahq"
         }

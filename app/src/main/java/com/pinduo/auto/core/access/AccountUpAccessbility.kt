@@ -18,7 +18,7 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
 
     private var isSwiped: Boolean = false
     private lateinit var userconfig: String
-    private val listContains = arrayListOf<String>("服装","衣服","穿搭","上衣","裤子")
+    private val listContains = arrayListOf<String>("服装","衣服","穿搭","上衣","裤子","的")
 
     companion object {
         val INSTANCE: AccountUpAccessbility by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -118,6 +118,64 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
                     MyApplication.instance.getUiHandler().sendMessage("任务1容错双击右上角")
                 }
             }
+            val delayTime:Long = TaskUtils.randomTime(minTime,maxTime)
+            MyApplication.instance.getUiHandler().sendMessage("等待${delayTime/1000L}秒")
+            WaitUtil.sleep(delayTime)
+            NodeUtils.onSwipe(service)
+        }while (getSwiped())
+    }
+
+
+    fun doSwipe2(minTime:String,maxTime:String){
+        do {
+           try {
+               withId(DouyinIds.geta91())?.finder?.find()?.let {it1 ->
+                   if(it1.isNotEmpty()){
+                       val txt: String? = it1.last()?.text?.toString()
+                       if (!TextUtils.isEmpty(txt)) {
+                           MyApplication.instance.getUiHandler().sendMessage(txt!!)
+                           listContains.forEach {t ->
+                               if(txt.contains(t)){
+                                   userconfig = t
+                               }
+                           }
+
+                           if (!TextUtils.isEmpty(userconfig)) {
+                               MyApplication.instance.getUiHandler().sendMessage("--包含文本-->>${userconfig}")
+                               withId(DouyinIds.getayl())?.finder?.find()?.last()?.let {it2 ->
+                                   val desc:String? = it2.desc()
+                                   if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")) {
+                                       val isClick:Boolean = it2.globalClick()
+                                       if(isClick){
+                                           MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
+                                           withId(DouyinIds.getahl())?.globalClick()?.let {it3 ->
+                                               if(it3){
+                                                   withId(DouyinIds.getahq())?.trySetText(txt)?.let {it4 ->
+                                                       val isSend:Boolean = withId(DouyinIds.getai_())?.globalClick()
+                                                       if(isSend){
+                                                           MyApplication.instance.getUiHandler().sendMessage("评论成功->>${txt}")
+                                                       }
+                                                       withId(DouyinIds.getl4())?.globalClick()
+                                                   }
+                                               }else{
+                                                   withId(DouyinIds.getl4())?.click()
+                                               }
+                                           }
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                   }
+               }
+           }catch (e:Exception){
+               e.printStackTrace()
+               MyApplication.instance.getUiHandler().sendMessage("未找到文本节点")
+               LogUtils.logGGQ("任务1异常：${e.message}")
+               withId(DouyinIds.getl4())?.click()
+           }finally {
+
+           }
             val delayTime:Long = TaskUtils.randomTime(minTime,maxTime)
             MyApplication.instance.getUiHandler().sendMessage("等待${delayTime/1000L}秒")
             WaitUtil.sleep(delayTime)

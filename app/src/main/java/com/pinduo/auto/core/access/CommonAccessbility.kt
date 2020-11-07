@@ -8,6 +8,7 @@ import cn.vove7.andro_accessibility_api.api.waitForPage
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.utils.NodeUtils
+import com.pinduo.auto.utils.WaitUtil
 
 class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbility>(){
 
@@ -33,7 +34,7 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
         if(waitForPage(AppScope(Constants.GlobalValue.PACKAGE_DOUYIN,Constants.Douyin.PAGE_MAIN),3000L)){
             NodeUtils.tryWithText(s)
         }else{
-            NodeUtils.tryWithText(s,3000L)
+            NodeUtils.tryWithText(s)
         }
     }
 

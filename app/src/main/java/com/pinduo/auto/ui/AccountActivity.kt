@@ -27,6 +27,8 @@ class AccountActivity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_account
 
     override fun initData(savedInstanceState: Bundle?) {
+
+
         tv_imei.setText(IMEIUtils.getDeviceId())
         btn_bind.setOnClickListener {
             val username:String? = et_username.text.toString().trim()

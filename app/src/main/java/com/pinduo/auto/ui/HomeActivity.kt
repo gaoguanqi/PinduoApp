@@ -3,13 +3,19 @@ package com.pinduo.auto.ui
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.TextUtils
+import android.view.Gravity
 import android.view.KeyEvent
+import android.view.View
+import com.blankj.utilcode.util.AppUtils
 import com.lzy.okgo.OkGo
 import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
+import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.base.BaseActivity
 import com.pinduo.auto.utils.AccessibilityServiceUtils
 import com.pinduo.auto.utils.LogUtils
+import com.pinduo.auto.utils.ToastUtil
 import com.pinduo.auto.widget.download.DownLoadUtils
 import com.yhao.floatwindow.FloatWindow
 import kotlinx.android.synthetic.main.activity_home.*
@@ -21,23 +27,32 @@ class HomeActivity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_home
 
     override fun initData(savedInstanceState: Bundle?) {
+        val douyinVer = AppUtils.getAppVersionName(Constants.GlobalValue.PACKAGE_DOUYIN)
 
-        sw_float_window.isChecked = true
-        sw_float_window.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                FloatWindow.get()?.let {
-                    if (!it.isShowing) it.show()
-                }
-            } else {
-                FloatWindow.get()?.let {
-                    if (it.isShowing) it.hide()
+        if(TextUtils.equals(Constants.Douyin.V1220,douyinVer) || TextUtils.equals(Constants.Douyin.V1270,douyinVer)){
+            sw_float_window.isChecked = true
+            sw_float_window.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    FloatWindow.get()?.let {
+                        if (!it.isShowing) it.show()
+                    }
+                } else {
+                    FloatWindow.get()?.let {
+                        if (it.isShowing) it.hide()
+                    }
                 }
             }
-        }
 
-
+            tv_douyin.setText("抖音版本:${douyinVer}")
 //        checkVersion()
-        checkAccessibilityPermission()
+            checkAccessibilityPermission()
+        }else{
+            sw_float_window.visibility = View.GONE
+            tv_douyin.setText("抖音版本：${douyinVer}")
+            tv_douyin.textSize = 36f
+
+            ToastUtil.showTipToast("抖音版本：${douyinVer}")
+        }
     }
 
     private fun checkVersion() {

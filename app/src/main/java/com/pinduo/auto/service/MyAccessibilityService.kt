@@ -1,5 +1,6 @@
 package com.pinduo.auto.service
 
+import android.app.ActivityManager
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
@@ -10,6 +11,7 @@ import com.birbit.android.jobqueue.CancelResult
 import com.birbit.android.jobqueue.Job
 import com.birbit.android.jobqueue.TagConstraint
 import com.birbit.android.jobqueue.callback.JobManagerCallback
+import com.blankj.utilcode.util.AppUtils
 import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -85,6 +87,7 @@ class MyAccessibilityService :AccessibilityApi(){
             }
         }
     }
+    private var lastBackPressedMillis: Long = 0
 
     override fun onCreate() {
         //must 基础无障碍
@@ -217,7 +220,8 @@ class MyAccessibilityService :AccessibilityApi(){
                                         socketClient.onReceiveStatus()
                                         runnable.onReStart(software,task,zxTime.toLong() + Constants.GlobalValue.plusTime)
                                         AccountUpAccessbility.INSTANCE.setSwiped(true)
-                                        AccountUpAccessbility.INSTANCE.doSwipe(minTime,maxTime)
+//                                        AccountUpAccessbility.INSTANCE.doSwipe(minTime,maxTime)
+                                        AccountUpAccessbility.INSTANCE.doSwipe2(minTime,maxTime)
                                     }
                                 })
                             }else{
@@ -246,7 +250,6 @@ class MyAccessibilityService :AccessibilityApi(){
                                     if(mList.size > 1){
                                         if(index == mList.lastIndex){
                                             this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = s))){
-
                                             }
                                         }else{
                                             this.addJobInBackground(LiveTaskJob(TaskData(isExecute = true,task = task,content = s))){
@@ -254,8 +257,10 @@ class MyAccessibilityService :AccessibilityApi(){
                                             }
                                         }
                                     }else{
-                                        this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = s))){
-
+                                        if(lastBackPressedMillis + 3000L <= System.currentTimeMillis()){
+                                            this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = s))){
+                                                lastBackPressedMillis = System.currentTimeMillis()
+                                            }
                                         }
                                     }
                                 }
@@ -302,6 +307,7 @@ class MyAccessibilityService :AccessibilityApi(){
             LogUtils.logGGQ("任务结束停止所有job")
         }, TagConstraint.ALL,"job")
 
+
         when(task){
             Constants.Task.task1 ->{
                 socketClient?.sendSuccess()
@@ -325,6 +331,11 @@ class MyAccessibilityService :AccessibilityApi(){
                 }
             }
         }
+
+        // 抖音退出去
+        val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        am.killBackgroundProcesses(Constants.GlobalValue.PACKAGE_DOUYIN)
+
     }
 
     override fun onServiceConnected() {

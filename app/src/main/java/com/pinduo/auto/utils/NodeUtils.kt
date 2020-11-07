@@ -5,6 +5,7 @@ import android.accessibilityservice.GestureDescription
 import android.text.TextUtils
 import android.util.Pair
 import android.view.accessibility.AccessibilityNodeInfo
+import cn.vove7.andro_accessibility_api.api.click
 import cn.vove7.andro_accessibility_api.api.withText
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
@@ -47,18 +48,16 @@ class NodeUtils {
             }
         }
 
-
-        fun tryWithText(s: String, m: Long = 0L) {
+        fun tryWithText(s: String) {
             try {
-                val isClick: Boolean = if (m > 0) withText(s)?.await(m)?.globalClick()
-                    ?: false else withText(s)?.globalClick()
+                val isClick: Boolean = withText(s)?.globalClick()
                 MyApplication.instance.getUiHandler().sendMessage("点击--<${s}>--${isClick}")
             } catch (e: Exception) {
                 e.printStackTrace()
                 MyApplication.instance.getUiHandler().sendMessage("点击-<${s}>-异常")
-
             }
         }
+
 
         private val duration: Long = 500L
         private val width = ScreenUtils.getScreenWidth() //1080

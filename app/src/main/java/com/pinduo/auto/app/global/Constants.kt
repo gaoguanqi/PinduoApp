@@ -52,6 +52,8 @@ class Constants {
 
 
     object Douyin {
+        const val V1220 = "12.2.0"
+        const val V1270 = "12.7.0"
         //抖音首页
         const val PAGE_MAIN = "com.ss.android.ugc.aweme.main.MainActivity"
         //抖音直播页
