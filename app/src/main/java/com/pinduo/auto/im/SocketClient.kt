@@ -1,13 +1,17 @@
 package com.pinduo.auto.im
 
 import android.text.TextUtils
+import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.FileIOUtils
 import com.google.gson.Gson
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.app.config.Config
 import com.pinduo.auto.app.global.Constants
+import com.pinduo.auto.app.global.EventCode
 import com.pinduo.auto.http.entity.TaskEntity
+import com.pinduo.auto.utils.Event
+import com.pinduo.auto.utils.EventBusUtils
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -18,6 +22,8 @@ class SocketClient private constructor(){
 
     //任务消息
     private val EVENT_TASK:String = "task"
+
+    private val EVENT_IP:String = "ip_port"
 
     //收到消息回馈
     private val RECEIVE_STATUS:String = "receive_status"
@@ -122,6 +128,22 @@ class SocketClient private constructor(){
                     LogUtils.logGGQ("${EVENT_TASK} error -->>>${e}")
                     uiHandler.sendMessage("数据异常！！！")
                 }
+            }
+        })?.on(EVENT_IP,object :Emitter.Listener{
+            override fun call(vararg args: Any?) {
+               try {
+                   args?.let {
+                       val arg = it[0]
+                       arg?.let { it1 ->
+                           val iport:String = it1.toString()
+                           MyApplication.instance.getUiHandler().sendMessage(iport)
+                           val event:Event<String> = Event(EventCode.EVENT_IPORTE,iport)
+                           EventBusUtils.sendEvent(event)
+                       }
+                   }
+               }catch (e:Exception){
+                   e.fillInStackTrace()
+               }
             }
         })
     }

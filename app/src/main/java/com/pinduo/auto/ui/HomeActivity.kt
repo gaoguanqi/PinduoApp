@@ -12,8 +12,10 @@ import com.lzy.okgo.OkGo
 import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
+import com.pinduo.auto.app.global.EventCode
 import com.pinduo.auto.base.BaseActivity
 import com.pinduo.auto.utils.AccessibilityServiceUtils
+import com.pinduo.auto.utils.Event
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.ToastUtil
 import com.pinduo.auto.widget.download.DownLoadUtils
@@ -53,6 +55,15 @@ class HomeActivity : BaseActivity() {
 
             ToastUtil.showTipToast("抖音版本：${douyinVer}")
         }
+
+        btn_update.setOnClickListener {
+            downLoadAPK()
+        }
+    }
+
+    private fun downLoadAPK() {
+        val url:String = "http://cc.pinduocm.com/apkDownload"
+        DownLoadUtils().downLoadAndInstallAPK(HomeActivity@this,url)
     }
 
     private fun checkVersion() {
@@ -80,6 +91,15 @@ class HomeActivity : BaseActivity() {
         LogUtils.logGGQ("requestCode:${requestCode} -- resultCode:${resultCode}")
         if (requestCode == REQUESTCODE_ACCESSIBILITY) {
             checkAccessibilityPermission()
+        }
+    }
+
+    override fun <T> onEventBusDispense(event: Event<T>) {
+        super.onEventBusDispense(event)
+        when(event.code){
+            EventCode.EVENT_IPORTE ->{
+                tv_iport?.setText(event.data.toString())
+            }
         }
     }
 
