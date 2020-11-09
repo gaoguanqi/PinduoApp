@@ -67,7 +67,7 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
     }
 
     fun waitForMainPage(listener:MainPageListener){
-        if(waitForPage(AppScope(Constants.GlobalValue.PACKAGE_DOUYIN,Constants.Douyin.PAGE_MAIN),9000L)){
+        if(waitForPage(AppScope(Constants.GlobalValue.PACKAGE_DOUYIN,Constants.Douyin.PAGE_MAIN),6000L)){
             listener.call(true)
         }else{
             listener.call(false)

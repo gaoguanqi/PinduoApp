@@ -7,6 +7,7 @@ import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.api.*
 import com.blankj.utilcode.util.ScreenUtils
+import com.blankj.utilcode.util.StringUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.core.ids.DouyinIds
@@ -62,8 +63,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
 
     // 发评论
-    fun doSpeak(isExecute:Boolean,content: String){
-        isSuccess = false
+    fun doSpeak(content: String,type:String,delayTime:Long){
         try {
             if(withId(DouyinIds.getb82())?.globalClick()){
                 withId(DouyinIds.getb9q())?.childAt(0)?.trySetText(content)?.let {
@@ -88,13 +88,16 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
             withId(DouyinIds.getfvs())?.globalClick()
         }finally {
-            if(!isExecute){
+            if(!StringUtils.equals("3",type)){
                 if(isSuccess){
                     getSocketClient()?.sendSuccess()
                 }else{
                     getSocketClient()?.sendError()
                 }
             }
+            WaitUtil.sleep(delayTime)
+            MyApplication.instance.getUiHandler().sendMessage("间隔时间${delayTime}毫秒")
+
         }
     }
 

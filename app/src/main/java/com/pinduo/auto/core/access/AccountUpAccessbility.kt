@@ -1,17 +1,17 @@
 package com.pinduo.auto.core.access
 
 import android.accessibilityservice.AccessibilityService
+import android.os.SystemClock
 import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.api.click
+import cn.vove7.andro_accessibility_api.api.scrollUp
 import cn.vove7.andro_accessibility_api.api.withId
+import cn.vove7.andro_accessibility_api.api.withText
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.core.ids.DouyinIds
 import com.pinduo.auto.db.AppDatabase
-import com.pinduo.auto.utils.LogUtils
-import com.pinduo.auto.utils.NodeUtils
-import com.pinduo.auto.utils.TaskUtils
-import com.pinduo.auto.utils.WaitUtil
+import com.pinduo.auto.utils.*
 
 // 养号
 class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAccessbility>() {
@@ -25,6 +25,8 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
             AccountUpAccessbility()
         }
     }
+
+
 
     init {
         AppDatabase.getInstance(MyApplication.instance).infoDao()
@@ -126,6 +128,26 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
     }
 
 
+
+    fun doSwipe10(minTime:String,maxTime:String){
+        do {
+            try {
+                val delayTime:Long = TaskUtils.randomTime(minTime,maxTime)
+                MyApplication.instance.getUiHandler().sendMessage("等待${delayTime/1000L}秒")
+                WaitUtil.sleep(delayTime)
+                NodeUtils.onSwipe(service)
+            }catch (e:Exception){
+                e.fillInStackTrace()
+            }finally {
+
+            }
+        }while (getSwiped())
+    }
+
+
+
+
+
     fun doSwipe2(minTime:String,maxTime:String){
         do {
            try {
@@ -182,4 +204,329 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
             NodeUtils.onSwipe(service)
         }while (getSwiped())
     }
+
+
+
+
+    fun doSwipe3(minTime:String,maxTime:String){
+            try {
+                val delayTime :Long = TaskUtils.randomTime(minTime,maxTime)
+                WaitUtil.sleep(delayTime)
+                NodeUtils.onSwipe(service)
+
+                withId(DouyinIds.geta91())?.finder?.find()?.let {it1 ->
+                    if(it1.isNotEmpty()) {
+                        val txt: String? = it1.last()?.text?.toString()
+                        if(!TextUtils.isEmpty(txt)) {
+                            MyApplication.instance.getUiHandler().sendMessage(txt!!)
+                            listContains.forEach {t ->
+                                if(txt.contains(t)){
+                                    userconfig = t
+                                }
+                            }
+
+                            if (!TextUtils.isEmpty(userconfig)) {
+                                withId(DouyinIds.getayl())?.finder?.find()?.last()?.let {it2 ->
+                                    val desc:String? = it2.desc()
+                                    if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")) {
+                                        val isClick:Boolean = it2.globalClick()
+                                        if(isClick){
+                                            MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
+
+                                            withId("com.ss.android.ugc.aweme:id/adv")?.globalClick()?.let {
+                                                if (it) {
+                                                    MyApplication.instance.getUiHandler().sendMessage("点击ADV")
+                                                } else {
+                                                    MyApplication.instance.getUiHandler().sendMessage("未点击ADV")
+                                                }
+                                            }
+
+
+                                            withText("留下你的精彩评论吧")?.globalClick()?.let {
+                                                if (it) {
+                                                    MyApplication.instance.getUiHandler().sendMessage("点击-留下你的精彩评论吧-")
+                                                    withId("com.ss.android.ugc.aweme:id/adq")?.trySetText(txt)
+                                                        ?.let {
+                                                            if (it) {
+                                                                LogUtils.logGGQ("评论success")
+                                                            } else {
+                                                                LogUtils.logGGQ("评论error")
+                                                            }
+                                                        }
+                                                    withId("com.ss.android.ugc.aweme:id/ae9")?.globalClick()?.let {
+                                                        if (it) {
+                                                            LogUtils.logGGQ("ae9:success")
+                                                        } else {
+                                                            LogUtils.logGGQ("ae9error")
+                                                        }
+                                                    }
+                                                    withId("com.ss.android.ugc.aweme:id/ks")?.globalClick()?.let {
+                                                        if (it) {
+                                                            LogUtils.logGGQ("ks:success")
+                                                        } else {
+                                                            LogUtils.logGGQ("ks:error")
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+
+
+                            }
+                        }
+                    }
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
+
+            }finally {
+
+            }
+    }
+
+
+    fun doSwipe4(){
+        try {
+            withId(DouyinIds.geta91())?.finder?.find()?.let {it1 ->
+                if(it1.isNotEmpty()){
+                    val txt: String? = it1.last()?.text?.toString()
+                    if (!TextUtils.isEmpty(txt)) {
+                        MyApplication.instance.getUiHandler().sendMessage(txt!!)
+                        listContains.forEach {t ->
+                            if(txt.contains(t)){
+                                userconfig = t
+                            }
+                        }
+
+                        if (!TextUtils.isEmpty(userconfig)) {
+                            MyApplication.instance.getUiHandler().sendMessage("--包含文本-->>${userconfig}")
+                            withId(DouyinIds.getayl())?.finder?.find()?.last()?.let {it2 ->
+                                val desc:String? = it2.desc()
+                                if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")) {
+                                    val isClick:Boolean = it2.globalClick()
+                                    if(isClick){
+                                        MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
+                                        withId(DouyinIds.getahl())?.globalClick()?.let {it3 ->
+                                            if(it3){
+                                                withId(DouyinIds.getahq())?.trySetText(txt)?.let {it4 ->
+                                                    val isSend:Boolean = withId(DouyinIds.getai_())?.globalClick()
+                                                    if(isSend){
+                                                        MyApplication.instance.getUiHandler().sendMessage("评论成功->>${txt}")
+                                                    }
+                                                    withId(DouyinIds.getl4())?.globalClick()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+            MyApplication.instance.getUiHandler().sendMessage("未找到文本节点")
+            LogUtils.logGGQ("任务1异常：${e.message}")
+            withId(DouyinIds.getl4())?.click()
+        }finally {
+
+        }
+    }
+
+
+    fun doSwipe5(){
+        do {
+
+            MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
+
+            withId("com.ss.android.ugc.aweme:id/adv")?.globalClick()?.let {
+                if (it) {
+                    MyApplication.instance.getUiHandler().sendMessage("点击ADV")
+                } else {
+                    MyApplication.instance.getUiHandler().sendMessage("未点击ADV")
+                }
+            }
+
+
+            withText("留下你的精彩评论吧")?.globalClick()?.let {
+                if (it) {
+                    MyApplication.instance.getUiHandler().sendMessage("点击-留下你的精彩评论吧-")
+                    withId("com.ss.android.ugc.aweme:id/adq")?.trySetText("txt")
+                        ?.let {
+                            if (it) {
+                                LogUtils.logGGQ("评论success")
+                            } else {
+                                LogUtils.logGGQ("评论error")
+                            }
+                        }
+                    withId("com.ss.android.ugc.aweme:id/ae9")?.globalClick()?.let {
+                        if (it) {
+                            LogUtils.logGGQ("ae9:success")
+                        } else {
+                            LogUtils.logGGQ("ae9error")
+                        }
+                    }
+                    withId("com.ss.android.ugc.aweme:id/ks")?.globalClick()?.let {
+                        if (it) {
+                            LogUtils.logGGQ("ks:success")
+                        } else {
+                            LogUtils.logGGQ("ks:error")
+                        }
+                    }
+                }
+            }
+        }while (getSwiped())
+    }
+
+
+
+    fun doSwipe6(minTime:String,maxTime:String){
+        do {
+            try {
+                val delayTime :Long = TaskUtils.randomTime(minTime,maxTime)
+                MyApplication.instance.getUiHandler().sendMessage("等待${delayTime/1000L}秒")
+//                WaitUtil.sleep(delayTime)
+                SystemClock.sleep(delayTime)
+                NodeUtils.onSwipe(service)
+                withId(DouyinIds.geta91())?.finder?.find()?.let {it1 ->
+                    if(it1.isNotEmpty()){
+                        MyApplication.instance.getUiHandler().sendMessage("---it1--${it1.size}---")
+                        val txt: String? = it1.last()?.text?.toString()
+                        if(!TextUtils.isEmpty(txt)){
+                            MyApplication.instance.getUiHandler().sendMessage(txt!!)
+                            listContains.forEach {t ->
+                                if(txt.contains(t)){
+                                    userconfig = t
+                                }
+                            }
+                            if (!TextUtils.isEmpty(userconfig)) {
+                                withId(DouyinIds.getayl())?.finder?.find()?.let {it2 ->
+                                    if(it2.isNotEmpty()){
+                                        MyApplication.instance.getUiHandler().sendMessage("---it2--${it2.size}---")
+
+                                        it2.last()?.let {it3 ->
+                                            val desc:String? = it3.desc()
+                                            if(!TextUtils.isEmpty(desc) && desc!!.contains("未选中")) {
+                                                val isClickLike:Boolean = it3.globalClick()
+                                                if(isClickLike){
+                                                    MyApplication.instance.getUiHandler().sendMessage(">>点赞了<<")
+                                                    //评论
+                                                    withId(DouyinIds.getahl())?.globalClick()?.let { it4 ->
+                                                        if(it4){
+                                                            withId(DouyinIds.getahq())?.trySetText(txt)?.let { it5 ->
+                                                                WaitUtil.sleep(2000L)
+                                                                val isClickSend:Boolean = withId(DouyinIds.getai_())?.globalClick()
+                                                                if(isClickSend){
+                                                                    MyApplication.instance.getUiHandler().sendMessage("评论成功->>${txt}")
+                                                                }
+                                                            }
+                                                            withId(DouyinIds.getl4())?.globalClick()
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+            }catch (e:Exception){
+                e.printStackTrace()
+                MyApplication.instance.getUiHandler().sendMessage("任务1失败：${e.localizedMessage}")
+            }finally {
+                userconfig = ""
+                try {
+                    withId(DouyinIds.getl4())?.globalClick()
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+            }
+        }while (getSwiped())
+
+
+    }
+
+
+
+    fun doSwipe7(minTime:String,maxTime:String){
+
+        do {
+            try {
+                val delayTime :Long = TaskUtils.randomTime(minTime,maxTime)
+                WaitUtil.sleep(delayTime)
+                MyApplication.instance.getUiHandler().sendMessage("等待${delayTime/1000L}秒")
+                withId(DouyinIds.geta91())?.finder?.find()?.let { it1 ->
+                    MyApplication.instance.getUiHandler().sendMessage("查找->${it1.size}--${it1.last()?.text}")
+                }
+                NodeUtils.onSwipe(service)
+
+            }catch (e:Exception){
+                e.printStackTrace()
+                MyApplication.instance.getUiHandler().sendMessage("异常->${e.printStackTrace()}")
+            }finally {
+            }
+        }while (getSwiped())
+    }
+
+
+
+
+
+    fun doSwipe8(){
+        try {
+            withId(DouyinIds.geta91())?.finder?.find()?.let { it1 ->
+                MyApplication.instance.getUiHandler().sendMessage("查找->${it1.size}--${it1.last()?.text}")
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+            MyApplication.instance.getUiHandler().sendMessage("异常->${e.printStackTrace()}")
+        }finally {
+        }
+    }
+
+
+
+    fun doSwipe9(delayTime :Long){
+        try {
+//            (service as AccessibilityApi)?.rootViewNode?.finder()?.find()?.let {
+//                if(it.isNotEmpty()){
+//                    it.forEach { i ->
+//                        if(!TextUtils.isEmpty(i.text)){
+//                            LogUtils.logQ("-->>>>>>${i.text}")
+//                        }
+//                    }
+//                }
+//            }
+
+
+            withId(DouyinIds.geta91())?.find()?.let {it1 ->
+                if(it1.isNotEmpty()){
+                    it1.last()?.let { it2 ->
+                        val txt:String? = it2.text?.toString()
+                        if(!TextUtils.isEmpty(txt)){
+                            LogUtils.logGGQ("-->>${txt}")
+                            if(txt!!.contains("的")){
+                                MyApplication.instance.getUiHandler().sendMessage(txt)
+                            }
+                        }
+                    }
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }finally {
+
+        }
+    }
+
+
 }

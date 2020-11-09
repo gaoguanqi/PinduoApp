@@ -50,10 +50,12 @@ class NodeUtils {
 
         fun tryWithText(s: String) {
             try {
+                WaitUtil.sleep(1000L)
                 val isClick: Boolean = withText(s)?.globalClick()
                 MyApplication.instance.getUiHandler().sendMessage("点击--<${s}>--${isClick}")
             } catch (e: Exception) {
                 e.printStackTrace()
+                LogUtils.logGGQ("tryWithText 异常：${e.fillInStackTrace()}")
                 MyApplication.instance.getUiHandler().sendMessage("点击-<${s}>-异常")
             }
         }

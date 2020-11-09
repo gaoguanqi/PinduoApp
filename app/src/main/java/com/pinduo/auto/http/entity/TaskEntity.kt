@@ -24,5 +24,6 @@ data class TaskEntity(val code:Int = 0,
                       val is_send_heart:String = "",
                       val zhixing_time:String = "",
                       val query_task_id:String = "",
-                      val p_query_task_id:String = ""
+                      val p_query_task_id:String = "",
+                      val fayan_type:String = "1" // 3循环发言
 )

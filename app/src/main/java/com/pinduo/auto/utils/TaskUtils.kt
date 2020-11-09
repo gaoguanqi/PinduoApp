@@ -17,7 +17,7 @@ import kotlin.random.Random
 class TaskUtils{
     companion object{
         ///截取评论内容
-        fun handContent(content:String):String{
+        fun getContentRandom(content:String):String{
             if(TextUtils.isEmpty(content)) return "~"
             if(content.contains(";")){
                 content.split(";").let {
