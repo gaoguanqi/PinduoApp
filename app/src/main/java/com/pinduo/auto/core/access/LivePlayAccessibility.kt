@@ -124,7 +124,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
     // 循环评论
     fun doLoopSpeak(content: String){
-        TaskUtils.initContennt(content)
+        TaskUtils.initContent(content)
         do {
             val delayTime:Long = Random.nextLong(3000L,6000L)
             try {

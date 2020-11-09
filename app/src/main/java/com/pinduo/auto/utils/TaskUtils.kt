@@ -43,7 +43,7 @@ class TaskUtils{
             return array
         }
 
-        fun initContennt(content: String){
+        fun initContent(content: String){
             arrays.clear()
             arrays.addAll(getContentList(content))
         }
@@ -59,6 +59,8 @@ class TaskUtils{
             return arrays[loopIndex]
         }
 
+
+        fun getLoopCount():Int = loopIndex
 
         fun randomTime(min:String,max:String):Long{
             if(TextUtils.isEmpty(min) || TextUtils.isEmpty(max) || TextUtils.equals(min,"0") || TextUtils.equals(max,"0")){

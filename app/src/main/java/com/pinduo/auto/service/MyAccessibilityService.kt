@@ -28,6 +28,7 @@ import com.pinduo.auto.widget.timer.MyScheduledExecutor
 import com.pinduo.auto.widget.timer.TimerTickListener
 import com.pinduo.auto.http.entity.TaskEntity
 import com.pinduo.auto.utils.NodeUtils
+import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
 import com.yhao.floatwindow.*
 import java.util.concurrent.Executors
@@ -310,6 +311,7 @@ class MyAccessibilityService :AccessibilityApi(){
             Constants.Task.task3 -> {
                 if(LivePlayAccessibility.INSTANCE.getLoopSpeak()){
                     socketClient.sendSuccess()
+                    MyApplication.instance.getUiHandler().sendMessage("共循环评论->>${TaskUtils.getLoopCount()}次")
                 }
 
                 if (isNormal && LivePlayAccessibility.INSTANCE.isInLiveRoom()) {
