@@ -19,11 +19,14 @@ import com.pinduo.auto.utils.UiHandler
 
 class MyApplication : Application() {
 
+    //Main handler
     private lateinit var uiHandler: UiHandler
+    // 工作队列管理器
     private lateinit var jobManager: JobManager
 
     private var imei:String = ""
 
+    //屏幕锁屏唤醒 电量状态 广播
     private val usbBroadcastReceiver: USBBroadcastReceiver by lazy {
         USBBroadcastReceiver()
     }

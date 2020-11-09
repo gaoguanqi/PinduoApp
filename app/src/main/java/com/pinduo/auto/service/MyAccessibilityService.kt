@@ -311,7 +311,6 @@ class MyAccessibilityService :AccessibilityApi(){
             Constants.Task.task3 -> {
                 if(LivePlayAccessibility.INSTANCE.getLoopSpeak()){
                     socketClient.sendSuccess()
-                    MyApplication.instance.getUiHandler().sendMessage("共循环评论->>${TaskUtils.getLoopCount()}次")
                 }
 
                 if (isNormal && LivePlayAccessibility.INSTANCE.isInLiveRoom()) {

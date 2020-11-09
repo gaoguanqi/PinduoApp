@@ -1,9 +1,8 @@
 package com.pinduo.auto.core.ids
 
-import android.text.TextUtils
 import com.pinduo.auto.utils.TaskUtils
 
-
+//抖音 版本区分的id 不是最优方案
 class DouyinIds {
 
     companion object{

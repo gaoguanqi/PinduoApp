@@ -4,6 +4,7 @@ import com.birbit.android.jobqueue.Job
 import com.birbit.android.jobqueue.Params
 import com.pinduo.auto.core.data.TaskData
 
+//job 抽象类
 abstract class BaseJob(val data: TaskData): Job(Params(PRIORITY).requireNetwork().persist().groupBy("job").addTags("job")) {
 
     companion object {
