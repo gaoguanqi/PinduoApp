@@ -17,7 +17,7 @@ class LiveTaskJob(data: TaskData) :BaseJob(data){
 
         when(data.task){
             Constants.Task.task4 ->{
-                LivePlayAccessibility.INSTANCE.doSpeak(data.content,data.type,data.delayTime)
+                LivePlayAccessibility.INSTANCE.doSpeak(data.type,data.content,data.delayTime)
             }
 
             Constants.Task.task6 ->{

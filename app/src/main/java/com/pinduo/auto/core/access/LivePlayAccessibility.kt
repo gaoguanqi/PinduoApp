@@ -7,16 +7,17 @@ import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.api.*
 import com.blankj.utilcode.util.ScreenUtils
-import com.blankj.utilcode.util.StringUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.core.ids.DouyinIds
 import com.pinduo.auto.im.SocketClient
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.NodeUtils
+import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
 import com.pinduo.auto.widget.observers.ObserverListener
 import com.pinduo.auto.widget.observers.ObserverManager
+import kotlin.random.Random
 
 class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAccessibility>(),
     ObserverListener {
@@ -33,6 +34,8 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
     private var isInRoom: Boolean = false
     private var liveURI: String = ""
 
+    private var isLoopSpeak:Boolean = false
+
     fun isInLiveRoom(): Boolean = isInRoom
     fun setInLiveRoom(b: Boolean) {
         isInRoom = b
@@ -44,6 +47,11 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
         liveURI = s
     }
 
+
+    fun getLoopSpeak(): Boolean = isLoopSpeak
+    fun setLoopSpeak(b: Boolean) {
+        isLoopSpeak = b
+    }
 
     override fun initService(service: AccessibilityService): LivePlayAccessibility {
         return super.initService(service)
@@ -63,15 +71,30 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
 
     // 发评论
-    fun doSpeak(content: String,type:String,delayTime:Long){
+    fun doSpeak(type:String,content: String,delayTime:Long){
+        setLoopSpeak(false)
+        if(TextUtils.equals("3",type)){
+            setLoopSpeak(true)
+            doLoopSpeak(content)
+        }else{
+            doSingleSpeak(content,delayTime)
+        }
+    }
+
+
+   //普通评论
+    fun doSingleSpeak(content: String,delayTime:Long){
+        isSuccess = false
         try {
+            val txt:String = TaskUtils.getContentRandom(content)
             if(withId(DouyinIds.getb82())?.globalClick()){
-                withId(DouyinIds.getb9q())?.childAt(0)?.trySetText(content)?.let {
+                WaitUtil.sleep(1000L)
+                withId(DouyinIds.getb9q())?.childAt(0)?.trySetText(txt)?.let {
                     if(it){
                         withId(DouyinIds.getfvs())?.globalClick()?.let {it1 ->
                             if(it1){
                                 isSuccess = true
-                                MyApplication.instance.getUiHandler().sendMessage("评论成功:${content}")
+                                MyApplication.instance.getUiHandler().sendMessage("评论成功:${txt}")
                             }else{
                                 MyApplication.instance.getUiHandler().sendMessage("未点击发送")
                             }
@@ -88,18 +111,60 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
             withId(DouyinIds.getfvs())?.globalClick()
         }finally {
-            if(!StringUtils.equals("3",type)){
-                if(isSuccess){
-                    getSocketClient()?.sendSuccess()
-                }else{
-                    getSocketClient()?.sendError()
-                }
+            if(isSuccess){
+                getSocketClient()?.sendSuccess()
+            }else{
+                getSocketClient()?.sendError()
             }
-            WaitUtil.sleep(delayTime)
             MyApplication.instance.getUiHandler().sendMessage("间隔时间${delayTime}毫秒")
-
+            WaitUtil.sleep(delayTime)
         }
     }
+
+
+    // 循环评论
+    fun doLoopSpeak(content: String){
+        TaskUtils.initContennt(content)
+        do {
+            val delayTime:Long = Random.nextLong(3000L,6000L)
+            try {
+                val txt:String = TaskUtils.getContentIndex()
+                if(withId(DouyinIds.getb82())?.globalClick()){
+                    WaitUtil.sleep(1000L)
+                    withId(DouyinIds.getb9q())?.childAt(0)?.trySetText(txt)?.let {
+                        if(it){
+                            withId(DouyinIds.getfvs())?.globalClick()?.let {it1 ->
+                                if(it1){
+                                    MyApplication.instance.getUiHandler().sendMessage("评论成功:${txt}")
+                                }else{
+                                    MyApplication.instance.getUiHandler().sendMessage("未点击发送")
+                                }
+                            }
+                        }else{
+                            MyApplication.instance.getUiHandler().sendMessage("未设置文本")
+                        }
+                    }
+                }else{
+                    withId(DouyinIds.getfvs())?.globalClick()
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
+                MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
+                withId(DouyinIds.getfvs())?.globalClick()
+            }finally {
+                MyApplication.instance.getUiHandler().sendMessage("间隔时间${delayTime}毫秒")
+                WaitUtil.sleep(delayTime)
+            }
+        }while (getLoopSpeak())
+    }
+
+
+
+
+
+
+
+
 
 
    private fun startLiveRoom(zhiboNum: String) {

@@ -1,21 +1,15 @@
 package com.pinduo.auto.service
 
-import android.app.ActivityManager
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.AppScope
-import cn.vove7.andro_accessibility_api.api.findAllWith
-import cn.vove7.andro_accessibility_api.api.findWith
-import cn.vove7.andro_accessibility_api.api.withId
-import cn.vove7.andro_accessibility_api.viewnode.ViewNode
 import com.birbit.android.jobqueue.CancelResult
 import com.birbit.android.jobqueue.Job
 import com.birbit.android.jobqueue.TagConstraint
 import com.birbit.android.jobqueue.callback.JobManagerCallback
-import com.blankj.utilcode.util.AppUtils
 import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -23,8 +17,6 @@ import com.pinduo.auto.core.access.AccountUpAccessbility
 import com.pinduo.auto.core.access.CommonAccessbility
 import com.pinduo.auto.core.access.LivePlayAccessibility
 import com.pinduo.auto.core.data.TaskData
-import com.pinduo.auto.core.ids.DouyinIds
-import com.pinduo.auto.core.job.AccountTaskJob
 import com.pinduo.auto.core.job.BaseJob
 import com.pinduo.auto.core.job.LiveTaskJob
 import com.pinduo.auto.extensions.layoutInflater
@@ -36,12 +28,10 @@ import com.pinduo.auto.widget.timer.MyScheduledExecutor
 import com.pinduo.auto.widget.timer.TimerTickListener
 import com.pinduo.auto.http.entity.TaskEntity
 import com.pinduo.auto.utils.NodeUtils
-import com.pinduo.auto.utils.TaskUtils
 import com.pinduo.auto.utils.WaitUtil
 import com.yhao.floatwindow.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import kotlin.random.Random
 
 class MyAccessibilityService :AccessibilityApi(){
 
@@ -57,8 +47,6 @@ class MyAccessibilityService :AccessibilityApi(){
 
 
     override val enableListenAppScope: Boolean = true
-
-    private lateinit var taskData: TaskData
 
 
     private val floatWindow:FloatWindow.B by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED){
@@ -94,7 +82,6 @@ class MyAccessibilityService :AccessibilityApi(){
             }
         }
     }
-    private var lastBackPressedMillis: Long = 0
 
     override fun onCreate() {
         //must 基础无障碍
@@ -106,8 +93,7 @@ class MyAccessibilityService :AccessibilityApi(){
         CommonAccessbility.INSTANCE.initService(this)
         LivePlayAccessibility.INSTANCE.initService(this).setSocketClient(socketClient)
         AccountUpAccessbility.INSTANCE.initService(this)
-        MyApplication.instance.getJobManager().addCallback(object :
-            JobManagerCallback{
+        MyApplication.instance.getJobManager().addCallback(object : JobManagerCallback{
             override fun onJobRun(job: Job, resultCode: Int) {
                 LogUtils.logGGQ("onJobRun：${(job as BaseJob).data.task}---${resultCode}")
             }
@@ -115,10 +101,6 @@ class MyAccessibilityService :AccessibilityApi(){
             override fun onDone(job: Job) {
                 val data = (job as BaseJob).data
                 LogUtils.logGGQ("onDone：${data.task}")
-
-                when(data.task){
-
-                }
 
             }
 
@@ -181,11 +163,13 @@ class MyAccessibilityService :AccessibilityApi(){
                         Constants.Task.task1 ->{
                             stopTask(job,false)
                         }
+
                         Constants.Task.task3 ->{
                             if(LivePlayAccessibility.INSTANCE.isInLiveRoom()){
                                 stopTask(job,false)
                             }
                         }
+
                     }
                 }
             }
@@ -231,11 +215,6 @@ class MyAccessibilityService :AccessibilityApi(){
                                         socketClient.onReceiveStatus()
                                         runnable.onReStart(software,task,zxTime.toLong() + Constants.GlobalValue.plusTime)
                                         AccountUpAccessbility.INSTANCE.setSwiped(true)
-//                                        MyApplication.instance.getJobManager().addJobInBackground(AccountTaskJob(TaskData(task = task,minTime = minTime,maxTime = maxTime))){
-//                                            //回调
-//                                        }
-
-
                                         AccountUpAccessbility.INSTANCE.doSwipe10(minTime,maxTime)
                                     }
                                 })
@@ -281,32 +260,16 @@ class MyAccessibilityService :AccessibilityApi(){
 //                                }
 //                            }
 
-
-
-                            //----
+                            val content:String = entity.fayan
                             val type:String = entity.fayan_type
                             var delayTime:Long = 1000L
-
-                            when(type){
-                                "3" ->{
-                                    // 循环发言
-                                    val content:String = TaskUtils.getContentRandom(entity.fayan)
-                                    delayTime = Random.nextLong(2000L,6000L)
-                                    MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = task,type = type,content = content,delayTime = delayTime))){
-
-                                    }
-                                }
-                                else ->{
-                                    val content:String = TaskUtils.getContentRandom(entity.fayan)
-                                    if(!TextUtils.isEmpty(entity.interval) && entity.interval.toInt() > 0){
-                                        delayTime = entity.interval.toInt()*1000L
-                                    }
-                                    MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = task,content = content,delayTime = delayTime))){
-
-                                    }
-                                }
+                            if(!TextUtils.isEmpty(entity.interval) && entity.interval.toInt() > 0){
+                                delayTime = entity.interval.toInt()*1000L
                             }
 
+                            MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = task,type = type,content = content,delayTime = delayTime))){
+
+                            }
                         }
 
                         Constants.Task.task6 ->{
@@ -345,15 +308,22 @@ class MyAccessibilityService :AccessibilityApi(){
             }
 
             Constants.Task.task3 -> {
+                if(LivePlayAccessibility.INSTANCE.getLoopSpeak()){
+                    socketClient.sendSuccess()
+                }
+
                 if (isNormal && LivePlayAccessibility.INSTANCE.isInLiveRoom()) {
                     socketClient.sendParentSuccess()
                 } else {
                     socketClient.sendParentError()
                 }
+
+                LivePlayAccessibility.INSTANCE.setLoopSpeak(false)
                 LivePlayAccessibility.INSTANCE.setInLiveRoom(false)
                 LivePlayAccessibility.INSTANCE.setLiveURI("")
                 ObserverManager.instance.remove(task)
                 CommonAccessbility.INSTANCE.douyin2MainWithText("推荐")
+
                 if(isNormal){
                     uiHandler.sendMessage("正常结束")
                 }else{
@@ -439,4 +409,15 @@ class MyAccessibilityService :AccessibilityApi(){
             LogUtils.logGGQ("FloatWindow onFail")
         }
     }
+
+
+//    fun executeLoopSpeak(){
+//        // 循环发言
+//        val content:String = TaskUtils.getContentRandom(taskEntity!!.fayan)
+//        val delayTime = Random.nextLong(2000L,6000L)
+//        MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = taskEntity!!.task,type = taskEntity!!.fayan_type,content = content,delayTime = delayTime))){
+//
+//        }
+//    }
+
 }

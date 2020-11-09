@@ -15,7 +15,11 @@ import kotlin.random.Random
 
 
 class TaskUtils{
+
     companion object{
+        private var loopIndex:Int = 0
+        private var arrays:ArrayList<String> = arrayListOf()
+
         ///截取评论内容
         fun getContentRandom(content:String):String{
             if(TextUtils.isEmpty(content)) return "~"
@@ -39,17 +43,34 @@ class TaskUtils{
             return array
         }
 
+        fun initContennt(content: String){
+            arrays.clear()
+            arrays.addAll(getContentList(content))
+        }
+
+        fun getContentIndex():String{
+            if(arrays.isEmpty()){
+                return "~"
+            }
+            loopIndex++
+            if(loopIndex >= arrays.size){
+                loopIndex = 0
+            }
+            return arrays[loopIndex]
+        }
 
 
         fun randomTime(min:String,max:String):Long{
             if(TextUtils.isEmpty(min) || TextUtils.isEmpty(max) || TextUtils.equals(min,"0") || TextUtils.equals(max,"0")){
                 return 1000L
             }
-            val time:Int = Random.nextInt(min.toInt(),max.toInt())
-            if(time <= 0){
-                return 1000L
+            val tmin:Int = min.toInt()
+            val tmax:Int = max.toInt()
+            if(tmin <= tmax){
+                return tmin *1000L
             }
-            return time *1000L
+            val time:Long = Random.nextLong(tmin*1000L,tmax*1000L)
+            return time
         }
 
         fun isDouyin1270():Boolean{
