@@ -65,6 +65,9 @@ class HomeActivity : BaseActivity() {
     override fun hasUsedEventBus(): Boolean = true
     
     private fun downLoadAPK() {
+
+
+
         val url:String = "http://cc.pinduocm.com/apkDownload"
         DownLoadUtils().downLoadAndInstallAPK(HomeActivity@this,url)
     }

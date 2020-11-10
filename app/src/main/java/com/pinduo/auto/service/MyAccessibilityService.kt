@@ -187,7 +187,7 @@ class MyAccessibilityService :AccessibilityApi(){
                     uiHandler.sendMessage(message)
                 }
 
-                if(!TextUtils.isEmpty(task) && !TextUtils.isEmpty(message) && TextUtils.equals(message,"stop")){
+                if(!TextUtils.isEmpty(task) && !TextUtils.isEmpty(message) && TextUtils.equals(message,"stop") || TextUtils.equals(message,"cancle") ){
                     stopTask(task,true)
                     return
                 }

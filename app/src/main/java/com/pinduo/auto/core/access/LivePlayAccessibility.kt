@@ -282,6 +282,9 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                         }else{
                             WaitUtil.sleep(2000L)
                             back()
+                            click(x,y)
+                            WaitUtil.sleep(2000L)
+                            click(x,y)
                         }
                     }
                 }
