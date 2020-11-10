@@ -45,6 +45,12 @@ class DouyinIds {
             return baseId+"fh9"
         }
 
+        fun getd_e():String{
+            if(!TaskUtils.isDouyin1270()){
+                return baseId+"d0q"
+            }
+            return baseId+"d_e"
+        }
         //todo Main 描述文字
         fun geta91():String{
             if(!TaskUtils.isDouyin1270()){

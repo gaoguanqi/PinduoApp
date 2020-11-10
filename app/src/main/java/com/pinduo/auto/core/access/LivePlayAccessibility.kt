@@ -6,6 +6,7 @@ import android.net.Uri
 import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.api.*
+import cn.vove7.andro_accessibility_api.viewfinder.ViewFindBuilder
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -250,14 +251,13 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
     fun doShopCart() {
         isSuccess = false
         try {
-            withId(DouyinIds.getfhq())?.globalClick()?.let {
+            withId(DouyinIds.getfhq())?.await(100000L)?.globalClick()?.let {
                 if (it) {
-                    withId(DouyinIds.getfh9())?.globalClick()?.let { it1 ->
+                    withId(DouyinIds.getfh9())?.await(10000L)?.globalClick()?.let { it1 ->
                         if (it1) {
-                            WaitUtil.sleep(2000L)
-                            withText("立即购买")?.globalClick()?.let { it2 ->
+                            withText("立即购买")?.await(10000L)?.globalClick()?.let { it2 ->
                                 if (it2) {
-                                    WaitUtil.sleep(2000L)
+                                    WaitUtil.sleep(3000L)
                                     NodeUtils.onClickTextByNode(service.rootInActiveWindow)
                                     MyApplication.instance.getUiHandler().sendMessage("等待。。。")
                                     isSuccess = true
@@ -273,6 +273,10 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                                     back()
                                     WaitUtil.sleep(1000L)
                                     back()
+                                }else{
+                                    back()
+                                    WaitUtil.sleep(1000L)
+                                    back()
                                 }
                             }
                         }else{
@@ -282,10 +286,20 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                     }
                 }
             }
+
         }catch (e:Exception){
             e.printStackTrace()
             MyApplication.instance.getUiHandler().sendMessage("购物车失败！！！")
         }finally {
+            try {
+                withId(DouyinIds.getd_e())?.await(10000L)?.globalClick()?.let {
+                    if(it){
+                        back()
+                    }
+                }
+            }catch (e:Exception){
+                e.fillInStackTrace()
+            }
             if(isSuccess){
                 getSocketClient()?.sendSuccess()
             }else {
