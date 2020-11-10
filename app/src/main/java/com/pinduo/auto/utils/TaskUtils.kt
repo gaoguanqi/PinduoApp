@@ -68,7 +68,7 @@ class TaskUtils{
             }
             val tmin:Int = min.toInt()
             val tmax:Int = max.toInt()
-            if(tmin <= tmax){
+            if(tmin >= tmax){
                 return tmin *1000L
             }
             val time:Long = Random.nextLong(tmin*1000L,tmax*1000L)

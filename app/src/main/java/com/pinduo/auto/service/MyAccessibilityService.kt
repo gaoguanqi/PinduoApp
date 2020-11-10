@@ -213,6 +213,7 @@ class MyAccessibilityService :AccessibilityApi(){
                                         }
                                         NodeUtils.tryWithText("推荐")
                                         WaitUtil.sleep(2000L)
+                                        // 任务1 接收到数据 要回馈
                                         socketClient.onReceiveStatus()
                                         runnable.onReStart(software,task,zxTime.toLong() + Constants.GlobalValue.plusTime)
                                         AccountUpAccessbility.INSTANCE.setSwiped(true)
@@ -238,28 +239,6 @@ class MyAccessibilityService :AccessibilityApi(){
 
                         Constants.Task.task4 -> {
 
-//                            val mList:ArrayList<String> = TaskUtils.getContentList(entity.fayan)
-//                            MyApplication.instance.getUiHandler().sendMessage("评论数据size->>${mList.size}")
-//                            MyApplication.instance.getJobManager().run {
-//                                mList.forEachIndexed { index, s ->
-//                                    if(mList.size > 1){
-//                                        if(index == mList.lastIndex){
-//                                            this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = s))){
-//                                            }
-//                                        }else{
-//                                            this.addJobInBackground(LiveTaskJob(TaskData(isExecute = true,task = task,content = s))){
-//
-//                                            }
-//                                        }
-//                                    }else{
-//                                        if(lastBackPressedMillis + 3000L <= System.currentTimeMillis()){
-//                                            this.addJobInBackground(LiveTaskJob(TaskData(task = task,content = s))){
-//                                                lastBackPressedMillis = System.currentTimeMillis()
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
 
                             val content:String = entity.fayan
                             val type:String = entity.fayan_type

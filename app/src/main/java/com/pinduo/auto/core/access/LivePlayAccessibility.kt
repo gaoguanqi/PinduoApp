@@ -109,7 +109,11 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
         }catch (e:Exception){
             e.printStackTrace()
             MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
-            withId(DouyinIds.getfvs())?.globalClick()
+            try {
+                withId(DouyinIds.getfvs())?.globalClick()
+            }catch (e:Exception){
+                e.fillInStackTrace()
+            }
         }finally {
             if(isSuccess){
                 getSocketClient()?.sendSuccess()
@@ -150,19 +154,17 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             }catch (e:Exception){
                 e.printStackTrace()
                 MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
-                withId(DouyinIds.getfvs())?.globalClick()
+                try {
+                    withId(DouyinIds.getfvs())?.globalClick()
+                }catch (e:Exception){
+                    e.fillInStackTrace()
+                }
             }finally {
                 MyApplication.instance.getUiHandler().sendMessage("间隔时间${delayTime}毫秒")
                 WaitUtil.sleep(delayTime)
             }
         }while (getLoopSpeak())
     }
-
-
-
-
-
-
 
 
 

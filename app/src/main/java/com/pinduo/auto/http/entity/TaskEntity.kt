@@ -25,5 +25,5 @@ data class TaskEntity(val code:Int = 0,
                       val zhixing_time:String = "",
                       val query_task_id:String = "",
                       val p_query_task_id:String = "",
-                      val fayan_type:String = "1" // 3循环发言
+                      val fayan_type:String = "1" // 3循环发言，默认随机发言
 )

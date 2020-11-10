@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import com.blankj.utilcode.util.AppUtils
@@ -21,6 +20,7 @@ import com.pinduo.auto.utils.ToastUtil
 import com.pinduo.auto.widget.download.DownLoadUtils
 import com.yhao.floatwindow.FloatWindow
 import kotlinx.android.synthetic.main.activity_home.*
+
 
 class HomeActivity : BaseActivity() {
 
@@ -56,11 +56,14 @@ class HomeActivity : BaseActivity() {
             ToastUtil.showTipToast("抖音版本：${douyinVer}")
         }
 
+        tv_apppver.setText("当前版本:${AppUtils.getAppVersionName()}")
         btn_update.setOnClickListener {
             downLoadAPK()
         }
     }
 
+    override fun hasUsedEventBus(): Boolean = true
+    
     private fun downLoadAPK() {
         val url:String = "http://cc.pinduocm.com/apkDownload"
         DownLoadUtils().downLoadAndInstallAPK(HomeActivity@this,url)
