@@ -151,7 +151,7 @@ class MyAccessibilityService :AccessibilityApi(){
                 LogUtils.logGGQ("onMark：${mark}")
                 uiHandler.clearMessage()
                 uiHandler.sendMessage("onMark：${mark}")
-
+                TaskUtils.wakeUpAndUnlock()
 
             }
 

@@ -83,7 +83,7 @@ class USBBroadcastReceiver : BroadcastReceiver() {
                             //电量百分比
                             val batteryPct = level / scale
                             MyApplication.instance.getUiHandler()
-                                .sendMessage("充电：${level}--${batteryPct}--${scale}")
+                                .sendMessage("剩余电量:${level}——最大电量:${scale}")
                         }
                     }
 
@@ -121,6 +121,7 @@ class USBBroadcastReceiver : BroadcastReceiver() {
                         MyApplication.instance.getUiHandler().sendMessage("屏幕已锁屏")
                         LogUtils.logGGQ("屏幕锁屏")
                         TaskUtils.wakeUpAndUnlock()
+                        TaskUtils.upScreen()
                     }
                 }
             }

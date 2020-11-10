@@ -1,6 +1,7 @@
 package com.pinduo.auto.im
 
 import android.text.TextUtils
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.FileIOUtils
 import com.google.gson.Gson
@@ -66,6 +67,7 @@ class SocketClient private constructor(){
                         uiHandler.sendMessage(imei)
                         sendMessage("login",imei)
                         LogUtils.logGGQ("imei:${imei}")
+                        uiHandler.sendMessage("APP版本：${AppUtils.getAppVersionName()}")
                     }
                 }
             }

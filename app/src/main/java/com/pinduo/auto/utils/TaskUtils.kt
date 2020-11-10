@@ -107,7 +107,6 @@ class TaskUtils{
                 kLock?.let {
                     it.disableKeyguard()
                 }
-                upScreen()
             }catch (e:Exception){
                 e.printStackTrace()
             }
