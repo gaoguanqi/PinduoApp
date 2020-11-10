@@ -67,7 +67,7 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
 
     // 6秒内等待抖音 首页 出现
     fun waitForMainPage(listener:MainPageListener){
-        if(waitForPage(AppScope(Constants.GlobalValue.PACKAGE_DOUYIN,Constants.Douyin.PAGE_MAIN),6000L)){
+        if(waitForPage(AppScope(Constants.GlobalValue.PACKAGE_DOUYIN,Constants.Douyin.PAGE_MAIN),10000L)){
             listener.call(true)
         }else{
             listener.call(false)

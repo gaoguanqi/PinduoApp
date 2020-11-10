@@ -1,12 +1,14 @@
 package com.pinduo.auto.utils
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
 import android.os.PowerManager
 import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.api.scrollUp
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -115,7 +117,16 @@ class TaskUtils{
         fun upScreen(){
             scrollUp()
         }
+
+        fun openHomeAndKill(packageName:String){
+            ActivityUtils.startHomeActivity()
+            val am = MyApplication.instance.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            am.killBackgroundProcesses(packageName)
+        }
     }
+
+
+
 
 
 

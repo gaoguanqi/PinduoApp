@@ -6,10 +6,13 @@ import android.view.View
 import android.view.accessibility.AccessibilityManager
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.AppScope
+import cn.vove7.andro_accessibility_api.api.scrollUp
+import cn.vove7.andro_accessibility_api.api.swipe
 import com.birbit.android.jobqueue.CancelResult
 import com.birbit.android.jobqueue.Job
 import com.birbit.android.jobqueue.TagConstraint
 import com.birbit.android.jobqueue.callback.JobManagerCallback
+import com.blankj.utilcode.util.IntentUtils
 import com.pinduo.auto.R
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -187,7 +190,7 @@ class MyAccessibilityService :AccessibilityApi(){
                     uiHandler.sendMessage(message)
                 }
 
-                if(!TextUtils.isEmpty(task) && !TextUtils.isEmpty(message) && TextUtils.equals(message,"stop") || TextUtils.equals(message,"cancle") ){
+                if(!TextUtils.isEmpty(task) && !TextUtils.isEmpty(message) && TextUtils.equals(message,"stop") || TextUtils.equals(message,"cancel") ){
                     stopTask(task,true)
                     return
                 }
@@ -211,8 +214,9 @@ class MyAccessibilityService :AccessibilityApi(){
                                             LogUtils.logGGQ("热启动首页")
                                             MyApplication.instance.getUiHandler().sendMessage("热启动首页")
                                         }
-                                        NodeUtils.tryWithText("推荐")
+                                        scrollUp()
                                         WaitUtil.sleep(2000L)
+                                        NodeUtils.tryWithText("推荐")
                                         // 任务1 接收到数据 要回馈
                                         socketClient.onReceiveStatus()
                                         runnable.onReStart(software,task,zxTime.toLong() + Constants.GlobalValue.plusTime)
@@ -285,6 +289,9 @@ class MyAccessibilityService :AccessibilityApi(){
             Constants.Task.task1 ->{
                 socketClient?.sendSuccess()
                 AccountUpAccessbility.INSTANCE.setSwiped(false)
+
+                TaskUtils.openHomeAndKill(Constants.GlobalValue.PACKAGE_DOUYIN)
+
             }
 
             Constants.Task.task3 -> {
@@ -309,6 +316,9 @@ class MyAccessibilityService :AccessibilityApi(){
                 }else{
                     uiHandler.sendMessage("延时结束")
                 }
+
+                TaskUtils.openHomeAndKill(Constants.GlobalValue.PACKAGE_DOUYIN)
+
             }
         }
 
