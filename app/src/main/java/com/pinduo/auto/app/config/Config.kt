@@ -3,7 +3,7 @@ package com.pinduo.auto.app.config
 
 class Config {
     companion object {
-        const val BASE_URL: String = "http://ceshi.pinduocm.com/"
+        const val BASE_URL: String = "http://ceshi.pinduocm.com"
 //        const val BASE_URL: String = "http://pinduocm.com"
 
 

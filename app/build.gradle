@@ -132,4 +132,7 @@ dependencies {
     implementation "androidx.room:room-guava:$room_version"
     implementation 'androidx.room:room-coroutines:2.1.0-alpha04'
     androidTestImplementation "androidx.room:room-testing:$room_version"
+
+    implementation 'com.github.xuexiangjys:XUpdate:2.0.2'
+    implementation 'com.zhy:okhttputils:2.6.2'
 }

@@ -13,11 +13,13 @@ import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
 import com.pinduo.auto.app.global.EventCode
 import com.pinduo.auto.base.BaseActivity
+import com.pinduo.auto.http.api.ApiService
 import com.pinduo.auto.utils.AccessibilityServiceUtils
 import com.pinduo.auto.utils.Event
 import com.pinduo.auto.utils.LogUtils
 import com.pinduo.auto.utils.ToastUtil
-import com.pinduo.auto.widget.download.DownLoadUtils
+import com.pinduo.auto.widget.update.CustomUpdateParser
+import com.xuexiang.xupdate.XUpdate
 import com.yhao.floatwindow.FloatWindow
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -58,23 +60,22 @@ class HomeActivity : BaseActivity() {
 
         tv_apppver.setText("当前版本:${AppUtils.getAppVersionName()}")
         btn_update.setOnClickListener {
-            downLoadAPK()
+            checkVersion()
         }
+    }
+
+    private fun checkVersion() {
+        MyApplication.instance.getUiHandler().sendMessage("版本更新")
+        val url:String = ApiService.URL_VERINFO
+        XUpdate.newBuild(HomeActivity@this)
+            .updateUrl(url)
+//            .isAutoMode(true)
+            .updateParser(CustomUpdateParser())
+            .update()
     }
 
     override fun hasUsedEventBus(): Boolean = true
     
-    private fun downLoadAPK() {
-
-
-
-        val url:String = "http://cc.pinduocm.com/apkDownload"
-        DownLoadUtils().downLoadAndInstallAPK(HomeActivity@this,url)
-    }
-
-    private fun checkVersion() {
-        DownLoadUtils().checkVersion()
-    }
 
     private fun checkAccessibilityPermission() {
 
