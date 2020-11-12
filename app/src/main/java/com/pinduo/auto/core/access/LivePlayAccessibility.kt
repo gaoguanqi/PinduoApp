@@ -250,13 +250,12 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             val isClickCart:Boolean = withId(DouyinIds.getfhq())?.waitFor(9000L)?.globalClick()?:false
             if(isClickCart){
                 MyApplication.instance.getUiHandler().sendMessage("点击了购物车")
-                val isClickShopItem = withId(DouyinIds.getfh9())?.waitFor(9000L)?.globalClick()?:false
+                val isClickShopItem = withId(DouyinIds.getfh9())?.waitFor(9000L)?.tryClick()?:false
                 if(isClickShopItem){
                     MyApplication.instance.getUiHandler().sendMessage("点击了商品")
-                    val isClickBuyNow = withText("立即购买")?.waitFor(9000L)?.globalClick()?:false
+                    val isClickBuyNow = withText("立即购买")?.waitFor(9000L)?.tryClick()?:false
                     if(isClickBuyNow){
                         MyApplication.instance.getUiHandler().sendMessage("点击了立即购买")
-
                         WaitUtil.sleep(3000L)
                         NodeUtils.onClickTextByNode(service.rootInActiveWindow)
                         MyApplication.instance.getUiHandler().sendMessage("下单等待。。。")

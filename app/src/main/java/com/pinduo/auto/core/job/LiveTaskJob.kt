@@ -46,10 +46,4 @@ class LiveTaskJob(data: TaskData) :BaseJob(data){
     override fun onCancel(cancelReason: Int, throwable: Throwable?) {
         LogUtils.logGGQ("job onCancel")
     }
-
-    override fun getRetryLimit(): Int {
-       // return super.getRetryLimit()
-        //仅仅重启3次次，超过3次则放弃任务。
-        return 0
-    }
 }

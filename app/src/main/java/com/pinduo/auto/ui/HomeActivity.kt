@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
-import android.view.KeyEvent
 import android.view.View
 import com.blankj.utilcode.util.AppUtils
 import com.lzy.okgo.OkGo

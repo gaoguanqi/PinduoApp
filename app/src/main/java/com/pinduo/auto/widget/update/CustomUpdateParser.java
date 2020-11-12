@@ -32,6 +32,7 @@ public class CustomUpdateParser implements IUpdateParser {
             String updateContent = "新版本"; //更新内容
 //            String apkUrl = result.getData().getApk_url();
             String apkUrl = "http://cc.pinduocm.com/apkDownload";
+//            String apkUrl = "http://kf.pinduocm.com/apkdownload";
 //            String apkUrl = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
             Long apkSize = 0L;
             return new UpdateEntity()

@@ -60,7 +60,7 @@ android {
         }
 
         release {
-            debuggable true
+            debuggable false
             //移除无用的资源文件
 //            shrinkResources true
 //            zipAlignEnabled true

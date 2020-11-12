@@ -400,14 +400,4 @@ class MyAccessibilityService :AccessibilityApi(){
         }
     }
 
-
-//    fun executeLoopSpeak(){
-//        // 循环发言
-//        val content:String = TaskUtils.getContentRandom(taskEntity!!.fayan)
-//        val delayTime = Random.nextLong(2000L,6000L)
-//        MyApplication.instance.getJobManager().addJobInBackground(LiveTaskJob(TaskData(task = taskEntity!!.task,type = taskEntity!!.fayan_type,content = content,delayTime = delayTime))){
-//
-//        }
-//    }
-
 }

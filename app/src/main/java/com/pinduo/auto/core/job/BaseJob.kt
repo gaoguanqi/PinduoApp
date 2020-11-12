@@ -10,4 +10,9 @@ abstract class BaseJob(val data: TaskData): Job(Params(PRIORITY).requireNetwork(
     companion object {
         const val PRIORITY = 1
     }
+
+    override fun getRetryLimit(): Int {
+//        return super.getRetryLimit()
+        return 1
+    }
 }
