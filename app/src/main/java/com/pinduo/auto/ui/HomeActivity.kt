@@ -110,12 +110,12 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            this.moveTaskToBack(true)
-        }
-        return super.onKeyDown(keyCode, event)
-    }
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            this.moveTaskToBack(true)
+//        }
+//        return super.onKeyDown(keyCode, event)
+//    }
 
 
     override fun onDestroy() {

@@ -6,7 +6,6 @@ import android.net.Uri
 import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.andro_accessibility_api.api.*
-import cn.vove7.andro_accessibility_api.viewfinder.ViewFindBuilder
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
@@ -174,12 +173,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
         setLiveURI(zhiboNum)
         ObserverManager.instance.add(Constants.Task.task3,this)
         if (!isInLiveRoom() && !TextUtils.isEmpty(getLiveURI())) {
-            setInLiveRoom(true)
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getLiveURI()))
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            MyApplication.instance.startActivity(intent)
-
-            MyApplication.instance.getUiHandler().sendMessage("<<<直播间>>>")
+            inLiveRoom()
         }
     }
 
@@ -190,8 +184,8 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             Constants.Douyin.PAGE_MAIN -> {
                 MyApplication.instance.getUiHandler().sendMessage("回到首页")
                 setInLiveRoom(false)
-                //如果在任务内回到首页,进入直播间
-                startLiveRoom(getLiveURI())
+                //todo 如果在任务内回到首页,进入直播间
+                //startLiveRoom(getLiveURI())
             }
 
             Constants.Douyin.PAGE_LIVE_ROOM -> {
@@ -248,61 +242,67 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
     }
 
     //---------------购物车-----
+
     fun doShopCart() {
         isSuccess = false
         try {
-            withId(DouyinIds.getfhq())?.await(100000L)?.globalClick()?.let {
-                if (it) {
-                    withId(DouyinIds.getfh9())?.await(10000L)?.globalClick()?.let { it1 ->
-                        if (it1) {
-                            withText("立即购买")?.await(10000L)?.globalClick()?.let { it2 ->
-                                if (it2) {
-                                    WaitUtil.sleep(3000L)
-                                    NodeUtils.onClickTextByNode(service.rootInActiveWindow)
-                                    MyApplication.instance.getUiHandler().sendMessage("等待。。。")
-                                    isSuccess = true
-                                    WaitUtil.sleep(10000L)
-                                    withType("WebView")?.find()?.let { it3 ->
-                                        if (it3.size >= 2) {
-                                            it3[1]?.childAt(0)?.childAt(0)?.childAt(0)?.globalClick()
-                                        }
-                                    }
-                                    WaitUtil.sleep(2000L)
-                                    back()
-                                    WaitUtil.sleep(2000L)
-                                    back()
-                                    WaitUtil.sleep(1000L)
-                                    back()
-                                }else{
-                                    back()
-                                    WaitUtil.sleep(1000L)
-                                    back()
-                                }
-                            }
-                        }else{
-                            WaitUtil.sleep(2000L)
-                            back()
-                            click(x,y)
-                            WaitUtil.sleep(2000L)
-                            click(x,y)
-                        }
-                    }
-                }
-            }
+            val isClickCart:Boolean = withId(DouyinIds.getfhq())?.waitFor(9000L)?.globalClick()?:false
+            if(isClickCart){
+                MyApplication.instance.getUiHandler().sendMessage("点击了购物车")
+                val isClickShopItem = withId(DouyinIds.getfh9())?.waitFor(9000L)?.globalClick()?:false
+                if(isClickShopItem){
+                    MyApplication.instance.getUiHandler().sendMessage("点击了商品")
+                    val isClickBuyNow = withText("立即购买")?.waitFor(9000L)?.globalClick()?:false
+                    if(isClickBuyNow){
+                        MyApplication.instance.getUiHandler().sendMessage("点击了立即购买")
 
+                        WaitUtil.sleep(3000L)
+                        NodeUtils.onClickTextByNode(service.rootInActiveWindow)
+                        MyApplication.instance.getUiHandler().sendMessage("等待。。。")
+                        WaitUtil.sleep(10000L)
+                        withType("WebView")?.find()?.let { it3 ->
+                            if (it3.size >= 2) {
+                                isSuccess = it3[1]?.childAt(0)?.childAt(0)?.childAt(0)?.globalClick()?:false
+                            }
+                        }
+                        WaitUtil.sleep(4000L)
+                        val isClickGiveUp:Boolean = withText("放弃")?.waitFor(3000L)?.globalClick()?:false
+                        if(isClickGiveUp){
+                            MyApplication.instance.getUiHandler().sendMessage("放弃->点击")
+                        }else{
+                            back()
+                            MyApplication.instance.getUiHandler().sendMessage("放弃->返回")
+                        }
+                        WaitUtil.sleep(2000L)
+                        val isClickBuyBack = withId(DouyinIds.getd_e())?.waitFor(3000L)?.globalClick()?:false
+                        if(isClickBuyBack){
+                            MyApplication.instance.getUiHandler().sendMessage("立即购买back-点击")
+                        }else{
+                            back()
+                            MyApplication.instance.getUiHandler().sendMessage("立即购买back->返回")
+                        }
+                        WaitUtil.sleep(2000L)
+                        val isClickback = back()
+                        MyApplication.instance.getUiHandler().sendMessage("返回->${isClickback}")
+                    }else{
+                        MyApplication.instance.getUiHandler().sendMessage("没有立即购买")
+                        val isClickback1:Boolean = back()
+                        MyApplication.instance.getUiHandler().sendMessage("返回1->${isClickback1}")
+                        WaitUtil.sleep(2000L)
+                        val isClickback2:Boolean = back()
+                        MyApplication.instance.getUiHandler().sendMessage("返回2->${isClickback2}")
+                    }
+                }else{
+                    val isClickback:Boolean = back()
+                    MyApplication.instance.getUiHandler().sendMessage("没有商品->放回:${isClickback}")
+                }
+            }else{
+                MyApplication.instance.getUiHandler().sendMessage("没有购物车")
+            }
         }catch (e:Exception){
             e.printStackTrace()
             MyApplication.instance.getUiHandler().sendMessage("购物车失败！！！")
         }finally {
-            try {
-                withId(DouyinIds.getd_e())?.await(10000L)?.globalClick()?.let {
-                    if(it){
-                        back()
-                    }
-                }
-            }catch (e:Exception){
-                e.fillInStackTrace()
-            }
             if(isSuccess){
                 getSocketClient()?.sendSuccess()
             }else {
@@ -310,4 +310,17 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             }
         }
     }
+
+
+    private fun inLiveRoom(){
+        setInLiveRoom(true)
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getLiveURI()))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        MyApplication.instance.startActivity(intent)
+        MyApplication.instance.getUiHandler().sendMessage("<<<直播间>>>")
+
+    }
 }
+
+
+

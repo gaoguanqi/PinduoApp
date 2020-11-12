@@ -5,7 +5,6 @@ import android.accessibilityservice.GestureDescription
 import android.text.TextUtils
 import android.util.Pair
 import android.view.accessibility.AccessibilityNodeInfo
-import cn.vove7.andro_accessibility_api.api.click
 import cn.vove7.andro_accessibility_api.api.withText
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
@@ -16,6 +15,24 @@ class NodeUtils {
 
 
     companion object {
+
+        fun onClickById(service: AccessibilityService,id:String):Boolean{
+            val rootNode = service.rootInActiveWindow
+            if(rootNode == null){
+                return false
+            }else{
+                val nodes = rootNode.findAccessibilityNodeInfosByViewId(id)
+                if(nodes.isNullOrEmpty()){
+                    return false
+                }else{
+                    rootNode.recycle()
+                    for (i in nodes.indices.reversed()) {
+                        if (onClickByNode(nodes[i])) return true
+                    }
+                }
+            }
+            return false
+        }
 
         fun onClickByNode(node: AccessibilityNodeInfo?): Boolean {
             node?.let {
@@ -36,10 +53,7 @@ class NodeUtils {
             node?.let {
                 for (i in 0 until it.childCount) {
                     if (TextUtils.equals(
-                            "android.widget.TextView",
-                            it.getChild(i).className
-                        ) && !TextUtils.isEmpty(it.getChild(i).text)
-                    ) {
+                            "android.widget.TextView", it.getChild(i).className) && !TextUtils.isEmpty(it.getChild(i).text)) {
                         onClickByNode(it.getChild(i))
                     } else {
                         onClickTextByNode(it.getChild(i))
@@ -47,6 +61,8 @@ class NodeUtils {
                 }
             }
         }
+
+
 
         fun tryWithText(s: String) {
             try {

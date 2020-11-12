@@ -66,6 +66,9 @@ class Constants {
         const val PAGE_LIVE_MORE = "com.bytedance.android.livesdk.chatroom.viewmodule.toolbar.LiveToolbarMoreDialog"
         //直播间购物车
         const val PAGE_LIVE_CART = "com.bytedance.android.livesdk.livecommerce.dialog.ECBottomDialog"
+        //购物车内立即购买
+        const val PAGE_CART_BUY_NOW = "com.ss.android.ugc.aweme.commerce.sdk.anchorv3.AnchorV3Activity"
+
         //抖音版本更新 以后再说
         const val PAGE_UPDATE_X = "com.ss.android.ugc.aweme.update.x"
         const val PAGE_UPDATE_Y = "com.ss.android.ugc.aweme.update.y"
@@ -84,8 +87,6 @@ class Constants {
         const val PAGE_RECOMMENDCONTACT = "com.ss.android.ugc.aweme.friends.ui.RecommendContactActivity"
         //悬浮窗播放功能上线啦 暂不使用
         const val PAGE_FLOATVIEW_D = "com.bytedance.android.livesdk.floatview.d"
-        //
-
     }
 
 

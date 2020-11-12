@@ -76,7 +76,6 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
 
 
 
-
     interface MainPageListener{
         fun call(b:Boolean)
     }
