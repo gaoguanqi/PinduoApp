@@ -1,0 +1,21 @@
+ext {
+    android = [
+            applicationId: "com.pinduo.auto",
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.3",
+            minSdkVersion    : 24,
+            targetSdkVersion : 29,
+            versionCode      : 101,
+            versionName      : "1.0.1"
+    ]
+
+    version = [
+
+    ]
+
+
+    dependencies = [
+
+    ]
+
+}

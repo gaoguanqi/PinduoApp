@@ -246,6 +246,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
     fun doShopCart() {
         isSuccess = false
         try {
+            MyApplication.instance.getUiHandler().sendMessage("--开始刷购物车--")
             val isClickCart:Boolean = withId(DouyinIds.getfhq())?.waitFor(9000L)?.globalClick()?:false
             if(isClickCart){
                 MyApplication.instance.getUiHandler().sendMessage("点击了购物车")
@@ -258,14 +259,11 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
                         WaitUtil.sleep(3000L)
                         NodeUtils.onClickTextByNode(service.rootInActiveWindow)
-                        MyApplication.instance.getUiHandler().sendMessage("等待。。。")
+                        MyApplication.instance.getUiHandler().sendMessage("下单等待。。。")
                         WaitUtil.sleep(10000L)
-                        withType("WebView")?.find()?.let { it3 ->
-                            if (it3.size >= 2) {
-                                isSuccess = it3[1]?.childAt(0)?.childAt(0)?.childAt(0)?.globalClick()?:false
-                            }
-                        }
-                        WaitUtil.sleep(4000L)
+                        isSuccess = withText("提交订单")?.waitFor(4000L)?.childAt(0)?.childAt(0)?.childAt(0)?.click()?:false
+                        MyApplication.instance.getUiHandler().sendMessage("提交订单返回->${isSuccess}")
+                        WaitUtil.sleep(2000L)
                         val isClickGiveUp:Boolean = withText("放弃")?.waitFor(3000L)?.globalClick()?:false
                         if(isClickGiveUp){
                             MyApplication.instance.getUiHandler().sendMessage("放弃->点击")
@@ -274,7 +272,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                             MyApplication.instance.getUiHandler().sendMessage("放弃->返回")
                         }
                         WaitUtil.sleep(2000L)
-                        val isClickBuyBack = withId(DouyinIds.getd_e())?.waitFor(3000L)?.globalClick()?:false
+                        val isClickBuyBack = withId(DouyinIds.getd_e())?.waitFor(3000L)?.click()?:false
                         if(isClickBuyBack){
                             MyApplication.instance.getUiHandler().sendMessage("立即购买back-点击")
                         }else{
