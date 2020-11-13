@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+// walle
+apply plugin: 'walle'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -59,12 +61,22 @@ android {
             signingConfig signingConfigs.debug
         }
 
+//        debug {
+//            debuggable true
+//            //移除无用的资源文件
+//            shrinkResources true
+//            zipAlignEnabled true
+//            minifyEnabled true
+//            signingConfig signingConfigs.debug
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+
         release {
             debuggable false
             //移除无用的资源文件
-//            shrinkResources true
-//            zipAlignEnabled true
-            minifyEnabled false
+            shrinkResources true
+            zipAlignEnabled true
+            minifyEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -145,6 +157,7 @@ dependencies {
     implementation 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation 'com.irozon.sneaker:sneaker:2.0.0'
+    implementation 'com.meituan.android.walle:library:1.1.7'
 
     implementation 'com.github.Vove7:Android-Accessibility-Api:1.0.2'
 
@@ -167,4 +180,5 @@ dependencies {
 
 }
 
-
+// 多渠道使用walle示例（注：多渠道使用）
+apply from: 'multiple-channel.gradle'

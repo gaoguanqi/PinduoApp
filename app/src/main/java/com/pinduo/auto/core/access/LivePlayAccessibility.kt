@@ -75,7 +75,7 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
         setLoopSpeak(false)
         if(TextUtils.equals("3",type)){
             setLoopSpeak(true)
-            doLoopSpeak(content)
+            doLoopSpeak(content,delayTime)
         }else{
             doSingleSpeak(content,delayTime)
         }
@@ -87,11 +87,11 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
         isSuccess = false
         try {
             val txt:String = TaskUtils.getContentRandom(content)
-            if(withId(DouyinIds.getb82())?.globalClick()){
+            if(withId(DouyinIds.getb82())?.tryClick()){
                 WaitUtil.sleep(1000L)
                 withId(DouyinIds.getb9q())?.childAt(0)?.trySetText(txt)?.let {
                     if(it){
-                        withId(DouyinIds.getfvs())?.globalClick()?.let {it1 ->
+                        withId(DouyinIds.getfvs())?.tryClick()?.let {it1 ->
                             if(it1){
                                 isSuccess = true
                                 MyApplication.instance.getUiHandler().sendMessage("评论成功:${txt}")
@@ -104,15 +104,23 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                     }
                 }
             }else{
-                withId(DouyinIds.getfvs())?.globalClick()
+                withId(DouyinIds.getfvs())?.tryClick()
             }
         }catch (e:Exception){
             e.printStackTrace()
             MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
             try {
-                withId(DouyinIds.getfvs())?.globalClick()
+                MyApplication.instance.getUiHandler().sendMessage("尝试评论~！")
+                withId(DouyinIds.getb9q())?.childAt(0)?.trySetText("~")?.let {
+                    if(it){
+                        WaitUtil.sleep(2000L)
+                        val isTryClick = withId(DouyinIds.getfvs())?.tryClick()
+                        MyApplication.instance.getUiHandler().sendMessage("尝试评论->${isTryClick}")
+                    }
+                }
             }catch (e:Exception){
                 e.fillInStackTrace()
+                MyApplication.instance.getUiHandler().sendMessage("尝试评论~失败！")
             }
         }finally {
             if(isSuccess){
@@ -127,17 +135,19 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
 
 
     // 循环评论
-    fun doLoopSpeak(content: String){
+    fun doLoopSpeak(content: String,delayTime:Long){
         TaskUtils.initContent(content)
+        val fromTime:Long = delayTime
+        val untilTime:Long = delayTime*2
         do {
-            val delayTime:Long = Random.nextLong(3000L,6000L)
+            val delay:Long = Random.nextLong(fromTime,untilTime)
             try {
                 val txt:String = TaskUtils.getContentIndex()
-                if(withId(DouyinIds.getb82())?.globalClick()){
+                if(withId(DouyinIds.getb82())?.tryClick()){
                     WaitUtil.sleep(1000L)
                     withId(DouyinIds.getb9q())?.childAt(0)?.trySetText(txt)?.let {
                         if(it){
-                            withId(DouyinIds.getfvs())?.globalClick()?.let {it1 ->
+                            withId(DouyinIds.getfvs())?.tryClick()?.let {it1 ->
                                 if(it1){
                                     MyApplication.instance.getUiHandler().sendMessage("评论成功:${txt}")
                                 }else{
@@ -149,19 +159,27 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
                         }
                     }
                 }else{
-                    withId(DouyinIds.getfvs())?.globalClick()
+                    withId(DouyinIds.getfvs())?.tryClick()
                 }
             }catch (e:Exception){
                 e.printStackTrace()
                 MyApplication.instance.getUiHandler().sendMessage("评论失败！！！")
                 try {
-                    withId(DouyinIds.getfvs())?.globalClick()
+                    MyApplication.instance.getUiHandler().sendMessage("尝试评论~！")
+                    withId(DouyinIds.getb9q())?.childAt(0)?.trySetText("~")?.let {
+                        if(it){
+                            WaitUtil.sleep(2000L)
+                            val isTryClick = withId(DouyinIds.getfvs())?.tryClick()
+                            MyApplication.instance.getUiHandler().sendMessage("尝试评论->${isTryClick}")
+                        }
+                    }
                 }catch (e:Exception){
                     e.fillInStackTrace()
+                    MyApplication.instance.getUiHandler().sendMessage("尝试评论~失败！")
                 }
             }finally {
-                MyApplication.instance.getUiHandler().sendMessage("间隔时间${delayTime}毫秒")
-                WaitUtil.sleep(delayTime)
+                MyApplication.instance.getUiHandler().sendMessage("间隔时间${delay}毫秒")
+                WaitUtil.sleep(delay)
             }
         }while (getLoopSpeak())
     }
@@ -184,8 +202,8 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
             Constants.Douyin.PAGE_MAIN -> {
                 MyApplication.instance.getUiHandler().sendMessage("回到首页")
                 setInLiveRoom(false)
-                //todo 如果在任务内回到首页,进入直播间
-                //startLiveRoom(getLiveURI())
+                //如果在任务内回到首页,进入直播间
+                startLiveRoom(getLiveURI())
             }
 
             Constants.Douyin.PAGE_LIVE_ROOM -> {
@@ -315,7 +333,6 @@ class LivePlayAccessibility private constructor() : BaseAccessbility<LivePlayAcc
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         MyApplication.instance.startActivity(intent)
         MyApplication.instance.getUiHandler().sendMessage("<<<直播间>>>")
-
     }
 }
 
