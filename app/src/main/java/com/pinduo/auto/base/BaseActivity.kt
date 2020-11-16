@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.irozon.sneaker.Sneaker
 import com.pinduo.auto.R
@@ -12,14 +13,12 @@ import com.pinduo.auto.utils.EventBusUtils
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-abstract class BaseActivity : AppCompatActivity(), IView {
-    abstract fun getLayoutId(): Int
+abstract class BaseActivity(@LayoutRes layoutId:Int) : AppCompatActivity(layoutId), IView {
     abstract fun initData(savedInstanceState: Bundle?): Unit
     open fun hasUsedEventBus(): Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getLayoutId())
         if (hasUsedEventBus()) {
             EventBusUtils.register(this)
         }

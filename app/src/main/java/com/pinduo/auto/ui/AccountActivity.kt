@@ -23,8 +23,7 @@ import com.pinduo.auto.utils.IMEIUtils
 import com.pinduo.auto.utils.LogUtils
 import kotlinx.android.synthetic.main.activity_account.*
 
-class AccountActivity : BaseActivity() {
-    override fun getLayoutId(): Int = R.layout.activity_account
+class AccountActivity : BaseActivity(R.layout.activity_account) {
 
     override fun initData(savedInstanceState: Bundle?) {
 

@@ -5,8 +5,7 @@ import com.pinduo.auto.R
 import com.pinduo.auto.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_test.*
 
-class TestActivity : BaseActivity() {
-    override fun getLayoutId(): Int = R.layout.activity_test
+class TestActivity : BaseActivity(R.layout.activity_test) {
 
     override fun initData(savedInstanceState: Bundle?) {
         btn_test.setOnClickListener {

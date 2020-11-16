@@ -23,11 +23,10 @@ import com.yhao.floatwindow.FloatWindow
 import kotlinx.android.synthetic.main.activity_home.*
 
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(R.layout.activity_home) {
 
     private val REQUESTCODE_ACCESSIBILITY: Int = 1001
 
-    override fun getLayoutId(): Int = R.layout.activity_home
 
     override fun initData(savedInstanceState: Bundle?) {
         val douyinVer = AppUtils.getAppVersionName(Constants.GlobalValue.PACKAGE_DOUYIN)
