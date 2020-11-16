@@ -15,12 +15,10 @@ import com.pinduo.auto.utils.PermissionUtil
 import com.pinduo.auto.utils.RequestPermission
 import com.tbruyelle.rxpermissions2.RxPermissions
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : BaseActivity(R.layout.activity_splash) {
 
     val rxPermissions: RxPermissions = RxPermissions(this)
 
-
-    override fun getLayoutId(): Int = R.layout.activity_splash
 
     override fun initData(savedInstanceState: Bundle?) {
         applyPermissions()
