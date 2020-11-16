@@ -21,6 +21,7 @@ class Constants {
     object GlobalValue {
         const val PACKAGE_DOUYIN = "com.ss.android.ugc.aweme"
         const val PACKAGE_KUAISHOU = "com.smile.gifmaker"
+        const val PACKAGE_SOGOUOEM = "com.sohu.inputmethod.sogouoem" // 搜狗输入法
 
         const val plusTime: Long = 10L // 追加时间10秒
     }
@@ -89,5 +90,18 @@ class Constants {
         const val PAGE_FLOATVIEW_D = "com.bytedance.android.livesdk.floatview.d"
     }
 
+    object Sougou{
+        //声明与协议
+        const val PAGE_AGREE = "android.inputmethodservice.SoftInputWindow"
+
+        // 定制版声明
+        const val PAGE_CUSTOM = "eu"
+
+        //提示升级
+        const val PAGE_UPDATE = "oq"
+
+        // 声明与条款
+        const val PAGE_PROVISION = "color.support.v7.app.AlertDialog"
+    }
 
 }

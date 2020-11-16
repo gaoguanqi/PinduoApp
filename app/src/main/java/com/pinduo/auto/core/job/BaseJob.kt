@@ -13,6 +13,6 @@ abstract class BaseJob(val data: TaskData): Job(Params(PRIORITY).requireNetwork(
 
     override fun getRetryLimit(): Int {
 //        return super.getRetryLimit()
-        return 1
+        return 0
     }
 }

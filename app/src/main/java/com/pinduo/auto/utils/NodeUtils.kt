@@ -5,6 +5,7 @@ import android.accessibilityservice.GestureDescription
 import android.text.TextUtils
 import android.util.Pair
 import android.view.accessibility.AccessibilityNodeInfo
+import cn.vove7.andro_accessibility_api.api.withId
 import cn.vove7.andro_accessibility_api.api.withText
 import com.blankj.utilcode.util.ScreenUtils
 import com.pinduo.auto.app.MyApplication
@@ -75,6 +76,19 @@ class NodeUtils {
                 MyApplication.instance.getUiHandler().sendMessage("点击-<${s}>-异常")
             }
         }
+
+        fun tryWithId(id: String) {
+            try {
+                WaitUtil.sleep(1000L)
+                val isClick: Boolean = withId(id)?.tryClick()
+                MyApplication.instance.getUiHandler().sendMessage("点击--<${id}>--${isClick}")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                LogUtils.logGGQ("tryWithId 异常：${e.fillInStackTrace()}")
+                MyApplication.instance.getUiHandler().sendMessage("点击-<${id}>-异常")
+            }
+        }
+
 
 
         private val duration: Long = 500L

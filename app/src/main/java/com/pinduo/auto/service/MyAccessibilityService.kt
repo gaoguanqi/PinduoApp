@@ -72,7 +72,7 @@ class MyAccessibilityService :AccessibilityApi(){
         currentScope?.let {
             LogUtils.logQ("className：${it.pageName}")
             if(TextUtils.equals(Constants.GlobalValue.PACKAGE_DOUYIN,it.packageName)){
-                CommonAccessbility.INSTANCE.ignorePage(it.pageName)
+                CommonAccessbility.INSTANCE.ignoreDouyinPage(it.pageName)
                 when(it.pageName){
                     Constants.Douyin.PAGE_MAIN,
                     Constants.Douyin.PAGE_LIVE_ROOM,
@@ -83,6 +83,8 @@ class MyAccessibilityService :AccessibilityApi(){
                         ObserverManager.instance.notifyObserver(Constants.Task.task3,it.pageName)
                     }
                 }
+            }else if(TextUtils.equals(Constants.GlobalValue.PACKAGE_SOGOUOEM,it.packageName)){
+                CommonAccessbility.INSTANCE.ignoreSougouPage(it.pageName)
             }
         }
     }
@@ -191,6 +193,7 @@ class MyAccessibilityService :AccessibilityApi(){
                 }
 
                 if(!TextUtils.isEmpty(task) && !TextUtils.isEmpty(message) && TextUtils.equals(message,"stop") || TextUtils.equals(message,"cancel") ){
+                    MyApplication.instance.getUiHandler().sendMessage(message)
                     stopTask(task,true)
                     return
                 }
@@ -311,18 +314,18 @@ class MyAccessibilityService :AccessibilityApi(){
                 ObserverManager.instance.remove(task)
                 CommonAccessbility.INSTANCE.douyin2MainWithText("推荐")
 
-                if(isNormal){
-                    uiHandler.sendMessage("正常结束")
-                }else{
-                    uiHandler.sendMessage("延时结束")
-                }
+
 
                 TaskUtils.openHomeAndKill(Constants.GlobalValue.PACKAGE_DOUYIN)
 
             }
         }
 
-
+        if(isNormal){
+            uiHandler.sendMessage("正常结束")
+        }else{
+            uiHandler.sendMessage("延时结束")
+        }
     }
 
     override fun onServiceConnected() {

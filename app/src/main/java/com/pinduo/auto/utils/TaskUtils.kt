@@ -5,6 +5,7 @@ import android.app.ActivityManager
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
+import android.content.Intent
 import android.os.PowerManager
 import android.text.TextUtils
 import cn.vove7.andro_accessibility_api.api.scrollUp
@@ -12,6 +13,7 @@ import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.pinduo.auto.app.MyApplication
 import com.pinduo.auto.app.global.Constants
+import com.pinduo.auto.ui.HomeActivity
 import java.lang.Exception
 import kotlin.random.Random
 
@@ -119,7 +121,12 @@ class TaskUtils{
         }
 
         fun openHomeAndKill(packageName:String){
-            ActivityUtils.startHomeActivity()
+//            ActivityUtils.startHomeActivity()
+
+            val homeActivity:Intent = Intent(MyApplication.instance.applicationContext,HomeActivity::class.java)
+            homeActivity.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            MyApplication.instance.applicationContext.startActivity(homeActivity)
+
             val am = MyApplication.instance.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             am.killBackgroundProcesses(packageName)
         }

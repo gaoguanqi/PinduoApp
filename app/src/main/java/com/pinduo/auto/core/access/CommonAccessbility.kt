@@ -38,7 +38,7 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
     }
 
 
-    fun ignorePage(className:String) {
+    fun ignoreDouyinPage(className:String) {
         when(className){
             Constants.Douyin.PAGE_UPDATE_X,Constants.Douyin.PAGE_UPDATE_Y ->{
                 NodeUtils.tryWithText("以后再说")
@@ -61,6 +61,24 @@ class CommonAccessbility private constructor() : BaseAccessbility<CommonAccessbi
             }
             Constants.Douyin.PAGE_FLOATVIEW_D ->{
                 NodeUtils.tryWithText("暂不使用")
+            }
+        }
+    }
+
+    fun ignoreSougouPage(className: String) {
+        when(className){
+            Constants.Sougou.PAGE_AGREE ->{
+                NodeUtils.tryWithId("android:id/button1")
+            }
+            Constants.Sougou.PAGE_CUSTOM ->{
+                NodeUtils.tryWithId("android:id/button1")
+            }
+
+            Constants.Sougou.PAGE_UPDATE ->{
+                NodeUtils.tryWithId("android:id/button2")
+            }
+            Constants.Sougou.PAGE_PROVISION ->{
+                NodeUtils.tryWithId("android:id/button1")
             }
         }
     }
