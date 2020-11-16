@@ -164,6 +164,14 @@ class MyAccessibilityService :AccessibilityApi(){
                 LogUtils.logGGQ("结束任务：${name} --- ${job}")
                 uiHandler.sendMessage("结束任务：${name} --- ${job}")
                 uiHandler.clearMessage()
+
+                //重新运行辅助倒计时
+                runnable.isRuning().let {
+                    if(!it){
+                        runnable.onReStart("app","task",max)
+                    }
+                }
+
                 if(TextUtils.equals(Constants.Task.douyin,name)){
                     when(job){
                         Constants.Task.task1 ->{
