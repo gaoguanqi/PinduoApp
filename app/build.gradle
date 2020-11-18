@@ -146,6 +146,8 @@ dependencies {
     implementation 'com.github.yhaolpz:FloatWindow:1.0.9'
     implementation 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
     implementation 'org.greenrobot:eventbus:3.2.0'
+    kapt 'org.greenrobot:eventbus-annotation-processor:3.2.0'
+
     implementation 'com.irozon.sneaker:sneaker:2.0.0'
     implementation 'com.meituan.android.walle:library:1.1.7'
 
