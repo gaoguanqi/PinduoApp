@@ -23,7 +23,8 @@ class Constants {
         const val PACKAGE_KUAISHOU = "com.smile.gifmaker"
         const val PACKAGE_SOGOUOEM = "com.sohu.inputmethod.sogouoem" // 搜狗输入法
 
-        const val plusTime: Long = 10L // 追加时间10秒
+        //启动有抖音10秒的启动时间+10秒的延迟时间
+        const val plusTime: Long = 20L // 追加时间10秒
     }
 
     object BundleKey {

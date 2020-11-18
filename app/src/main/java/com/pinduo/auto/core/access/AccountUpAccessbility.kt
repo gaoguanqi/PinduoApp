@@ -129,6 +129,7 @@ class AccountUpAccessbility private constructor() : BaseAccessbility<AccountUpAc
 
 
     fun doSwipe10(minTime:String,maxTime:String){
+        setSwiped(true)
         do {
             try {
                 val delayTime:Long = TaskUtils.randomTime(minTime,maxTime)

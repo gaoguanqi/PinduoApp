@@ -20,6 +20,7 @@ import com.pinduo.auto.core.access.AccountUpAccessbility
 import com.pinduo.auto.core.access.CommonAccessbility
 import com.pinduo.auto.core.access.LivePlayAccessibility
 import com.pinduo.auto.core.data.TaskData
+import com.pinduo.auto.core.job.AccountTaskJob
 import com.pinduo.auto.core.job.BaseJob
 import com.pinduo.auto.core.job.LiveTaskJob
 import com.pinduo.auto.extensions.layoutInflater
@@ -214,6 +215,7 @@ class MyAccessibilityService :AccessibilityApi(){
                             val minTime:String = entity.min_time
                             val maxTime:String = entity.max_time
                             if(!TextUtils.isEmpty(zxTime)){
+
                                 CommonAccessbility.INSTANCE.douyin2Main()
                                 MyApplication.instance.getUiHandler().sendMessage("收到养号任务")
                                 CommonAccessbility.INSTANCE.waitForMainPage(object :CommonAccessbility.MainPageListener{
@@ -231,8 +233,11 @@ class MyAccessibilityService :AccessibilityApi(){
                                         // 任务1 接收到数据 要回馈
                                         socketClient.onReceiveStatus()
                                         runnable.onReStart(software,task,zxTime.toLong() + Constants.GlobalValue.plusTime)
-                                        AccountUpAccessbility.INSTANCE.setSwiped(true)
-                                        AccountUpAccessbility.INSTANCE.doSwipe10(minTime,maxTime)
+//                                        AccountUpAccessbility.INSTANCE.setSwiped(true)
+//                                        AccountUpAccessbility.INSTANCE.doSwipe10(minTime,maxTime)
+                                        MyApplication.instance.getJobManager().addJobInBackground(AccountTaskJob(TaskData(task = task,minTime = minTime,maxTime = maxTime))){
+
+                                        }
                                     }
                                 })
                             }else{
@@ -290,15 +295,18 @@ class MyAccessibilityService :AccessibilityApi(){
 
 
     private fun stopTask(task:String,isNormal:Boolean = true) {
-        //任务结束 停止所有job
-        MyApplication.instance.getJobManager().cancelJobsInBackground(CancelResult.AsyncCancelCallback {cancelResult ->
-            LogUtils.logGGQ("任务结束停止所有job")
-        }, TagConstraint.ALL,"job")
+
 
 
         when(task){
             Constants.Task.task1 ->{
-                socketClient?.sendSuccess()
+
+                //任务结束 停止所有job
+                MyApplication.instance.getJobManager().cancelJobsInBackground(CancelResult.AsyncCancelCallback {cancelResult ->
+                    LogUtils.logGGQ("任务结束停止所有job")
+                }, TagConstraint.ALL,"job")
+
+                socketClient.sendSuccess()
                 AccountUpAccessbility.INSTANCE.setSwiped(false)
 
                 TaskUtils.openHomeAndKill(Constants.GlobalValue.PACKAGE_DOUYIN)
@@ -306,6 +314,12 @@ class MyAccessibilityService :AccessibilityApi(){
             }
 
             Constants.Task.task3 -> {
+
+                //任务结束 停止所有job
+                MyApplication.instance.getJobManager().cancelJobsInBackground(CancelResult.AsyncCancelCallback {cancelResult ->
+                    LogUtils.logGGQ("任务结束停止所有job")
+                }, TagConstraint.ALL,"job")
+
                 if(LivePlayAccessibility.INSTANCE.getLoopSpeak()){
                     socketClient.sendSuccess()
                 }

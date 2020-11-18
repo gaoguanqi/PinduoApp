@@ -14,7 +14,6 @@ class AccountTaskJob(data: TaskData) :BaseJob(data){
 
         when(data.task){
             Constants.Task.task1 ->{
-//                AccountUpAccessbility.INSTANCE.slide(data.minTime,data.maxTime,"的")
                 AccountUpAccessbility.INSTANCE.doSwipe10(data.minTime,data.maxTime)
             }
         }
