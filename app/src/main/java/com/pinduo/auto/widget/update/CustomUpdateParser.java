@@ -1,5 +1,7 @@
 package com.pinduo.auto.widget.update;
 
+import android.util.SparseArray;
+
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.AppUtils;
@@ -8,6 +10,8 @@ import com.pinduo.auto.utils.LogUtils;
 import com.xuexiang.xupdate.entity.UpdateEntity;
 import com.xuexiang.xupdate.listener.IUpdateParseCallback;
 import com.xuexiang.xupdate.proxy.IUpdateParser;
+
+import java.util.ArrayList;
 
 /**
  * 自定义更新解析器
@@ -39,7 +43,7 @@ public class CustomUpdateParser implements IUpdateParser {
                     .setHasUpdate(hasUpdate)
                     .setIsIgnorable(isIgnorable)
                     .setVersionCode(versionCode)
-                    .setVersionName(versionName)
+                    .setVersionName("新")
                     .setUpdateContent(updateContent)
                     .setDownloadUrl(apkUrl)
                     .setSize(apkSize);
@@ -56,6 +60,8 @@ public class CustomUpdateParser implements IUpdateParser {
 
     @Override
     public boolean isAsyncParser() {
+
+
         return false;
     }
 }
